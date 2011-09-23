@@ -16,6 +16,7 @@ public:
     const sf::Texture& GetTexture(QString filename);
     const sf::Font& GetDefaultFont();
     const sf::Font& GetFont(QString filename);
+    void SetDefaultFont(QString name);
 
 private:
     Resources();

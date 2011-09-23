@@ -10,6 +10,7 @@
 #include "Entity.hpp"
 #include "Narwhal.hpp"
 #include "Torpedo.hpp"
+#include "Level.hpp"
 
 int LastID = 100;
 QString NextID() {
@@ -41,6 +42,9 @@ int main() {
     text.SetSize(8);
 
     scene.AddChild(&text);
+
+    Level level("level");
+    scene.AddChild(&level);
 
     Text fps("fps", "?? FPS");
     fps.Position.x = 795;

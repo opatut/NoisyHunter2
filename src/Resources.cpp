@@ -58,9 +58,9 @@ void Resources::_LoadFont(QString path, QString name) {
     std::cout << "loading font" << std::endl;
     sf::Font font;
     font.LoadFromFile(path.toStdString());
-    if(mDefaultFont == "")
-        mDefaultFont = name;
     mFonts.insert(name, font);
+    if(mDefaultFont == "")
+        SetDefaultFont(name);
 }
 
 void Resources::_LoadTexture(QString path, QString name) {
@@ -69,4 +69,8 @@ void Resources::_LoadTexture(QString path, QString name) {
     texture.LoadFromFile(path.toStdString());
     texture.SetSmooth(true);
     mTextures.insert(name, texture);
+}
+
+void Resources::SetDefaultFont(QString name) {
+    mDefaultFont = name;
 }
