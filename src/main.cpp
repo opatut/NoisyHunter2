@@ -12,54 +12,35 @@
 #include "Torpedo.hpp"
 #include "Level.hpp"
 
-int LastID = 100;
-QString NextID() {
-    LastID++;
-    return QString::number(LastID);
-}
+#include "StateManager.hpp"
+#include "GameState.hpp"
+#include "MenuState.hpp"
 
 int main() {
     sf::RenderWindow app(sf::VideoMode(800, 600, 32), "NoisyHunter");
+    app.SetPosition(sf::VideoMode::GetDesktopMode().Width / 2 - 400, sf::VideoMode::GetDesktopMode().Height / 2 - 300);
     app.SetFramerateLimit(60);
 
     Resources::GetInstance().LoadPath(QDir("../data"));
 
-    Entity scene("scene");
+    StateManager mgr;
+    mgr.AddState(new MenuState());
 
-    BackgroundGradient background("background");
-    scene.AddChild(&background);
-
-    Submarine submarine("submarine");
-    scene.AddChild(&submarine);
-
-    Narwhal narwhal("narwhal-01");
-    scene.AddChild(&narwhal);
-
-    Text text("text", "Noisy Hunter - Build 1");
-    text.Position.x = 795;
-    text.Position.y = 595;
-    text.SetAlign(Text::TA_RIGHT | Text::TA_BOTTOM);
-    text.SetSize(8);
-
-    scene.AddChild(&text);
-
-    Level level("level");
-    scene.AddChild(&level);
+    Entity overlay("debug_overlay");
 
     Text fps("fps", "?? FPS");
     fps.Position.x = 795;
     fps.Position.y = 580;
     fps.SetAlign(Text::TA_RIGHT | Text::TA_BOTTOM);
     fps.SetSize(8);
+    overlay.AddChild(&fps);
 
-    Text name("name", "opatut");
-    name.Position.x = 0;
-    name.Position.y = -24;
-    submarine.AddChild(&name);
-    name.SetAlign(Text::TA_BOTTOM);
-    name.SetSize(9);
-
-    scene.AddChild(&fps);
+    Text text("text", "Noisy Hunter - Build 3");
+    text.Position.x = 795;
+    text.Position.y = 595;
+    text.SetAlign(Text::TA_RIGHT | Text::TA_BOTTOM);
+    text.SetSize(8);
+    overlay.AddChild(&text);
 
     sf::Clock clock;
 
@@ -80,21 +61,30 @@ int main() {
             if(e.Type == sf::Event::Closed) {
                 app.Close();
             } else if(e.Type == sf::Event::KeyPressed) {
-                if(e.Key.Code == sf::Keyboard::Space) {
-                    scene.AddChild(new Torpedo("torpedo-" + NextID(), submarine.Position, submarine.Speed, submarine.Rotation + (submarine.Speed.x < 0 ? PI : 0)));
+                if(e.Key.Code == sf::Keyboard::F12) {
+                    app.Capture().SaveToFile("screenshot.png");
+                } else if(e.Key.Code == sf::Keyboard::Space) {
+                    mgr.AddState(new GameState(), 0);
+                } else if(e.Key.Code == sf::Keyboard::Q) {
+                    if(e.Key.Control) {
+                        // Ctrl + Q
+                        app.Close();
+                    }
                 }
             }
+            mgr.HandleEvent(e);
         }
 
         // UPDATE
-        scene.Update(time_diff);
+        mgr.Update(time_diff);
+        overlay.Update(time_diff);
 
         // DRAW
         app.Clear(sf::Color(0, 0, 0));
-        scene.Draw(app);
+        mgr.Draw(app);
+        overlay.Draw(app);
         app.Display();
 
     }
 
-    std::cout << "Hello" << std::endl;
 }

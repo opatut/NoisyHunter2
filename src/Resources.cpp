@@ -74,3 +74,8 @@ void Resources::_LoadTexture(QString path, QString name) {
 void Resources::SetDefaultFont(QString name) {
     mDefaultFont = name;
 }
+
+QString Resources::GetNextID() {
+    mLastId++;
+    return QString::number(mLastId);
+}

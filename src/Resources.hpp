@@ -18,6 +18,8 @@ public:
     const sf::Font& GetFont(QString filename);
     void SetDefaultFont(QString name);
 
+    QString GetNextID();
+
 private:
     Resources();
 
@@ -27,6 +29,7 @@ private:
     QMap<QString, sf::Texture> mTextures;
     QMap<QString, sf::Font> mFonts;
     QString mDefaultFont;
+    int mLastId;
 
 };
 

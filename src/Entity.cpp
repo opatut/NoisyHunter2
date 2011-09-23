@@ -9,6 +9,10 @@ Entity::Entity(QString name) {
     mParent = nullptr;
 }
 
+Entity::~Entity() {
+    RemoveAllChildren();
+}
+
 QString Entity::GetName() {
     return mName;
 }
@@ -108,5 +112,11 @@ void Entity::RemoveChild(Entity* child) {
     if(mChildren.count(child->GetName()) != 0) {
         // mChildren[child->GetName()] = nullptr;
         mChildren.erase(child->GetName());
+    }
+}
+
+void Entity::RemoveAllChildren() {
+    while(mChildren.size() > 0) {
+        RemoveChild(mChildren.begin()->second);
     }
 }

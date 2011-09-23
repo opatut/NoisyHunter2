@@ -8,6 +8,7 @@
 class Entity {
 public:
     Entity(QString name);
+    ~Entity();
     QString GetName();
 
     Vector2D Position;
@@ -19,7 +20,6 @@ public:
     Vector2D GetAbsoluteSpeed();
     Vector2D GetAbsoluteSize();
     float GetAbsoluteRotation();
-
 
     void Move(Vector2D vector);
     void Accelerate(Vector2D direction);
@@ -34,8 +34,10 @@ public:
 
     void SetParent(Entity* parent);
     Entity* GetParent();
+
     void AddChild(Entity* child);
     void RemoveChild(Entity* child);
+    void RemoveAllChildren();
 
 protected:
     float mLifetime;
