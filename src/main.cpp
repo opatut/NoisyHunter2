@@ -12,6 +12,8 @@
 #include "Entities/Submarine.hpp"
 #include "Entities/Torpedo.hpp"
 #include "Gui/Button.hpp"
+#include "Gui/FocusManager.hpp"
+#include "Gui/Panel.hpp"
 #include "Gui/Widget.hpp"
 #include "Hud/BackgroundGradient.hpp"
 #include "Hud/Text.hpp"
@@ -48,15 +50,40 @@ int main() {
     overlay.AddChild(&text);
 
     /* ======== GUI ======== */
-    Entity gui("gui");
-    Button* b;
+    Panel gui("gui");
+    gui.Position = Vector2D(290, 200);
+    gui.Size = Vector2D(220, 200);
+    gui.SetCaption("Test Panel");
 
-    b = new Button("button1", "Hello World Button");
-    b->Position.x = 300;
-    b->Position.y = 300;
+    Button* b;/*
+    b = new Button("button1", "Campaign");
+    b->Position.x = 10;
+    b->Position.y = 10;
     b->Size.x = 200;
-    b->Size.y = 40;
+    b->Size.y = 30;
     gui.AddChild(b);
+    b = new Button("button2", "Options");
+    b->Position.x = 10;
+    b->Position.y = 50;
+    b->Size.x = 200;
+    b->Size.y = 30;
+    gui.AddChild(b);
+    b = new Button("button3", "Quit");
+    b->Position.x = 10;
+    b->Position.y = 90;
+    b->Size.x = 200;
+    b->Size.y = 30;
+    gui.AddChild(b); */
+
+    for(int i = 0; i < 4; ++i) {
+        for(int j = 0; j < 4; ++j) {
+            b = new Button("button-" + Resources::GetInstance().GetNextID(), "X");
+            b->Position.x = j * 50;
+            b->Position.y = i * 50;
+            b->Size = Vector2D(40, 40);
+            gui.AddChild(b);
+        }
+    }
 
     /* ======== Timing ======== */
     sf::Clock clock;
@@ -89,9 +116,22 @@ int main() {
                         // Ctrl + Q
                         app.Close();
                     }
+                } else if(e.Key.Code == sf::Keyboard::Tab) {
+                    FocusManager::GetInstance().ShiftFocus( e.Key.Shift ? -1 : 1 );
+                } else if(e.Key.Code == sf::Keyboard::Right) {
+                    FocusManager::GetInstance().ShiftFocusRight();
+                } else if(e.Key.Code == sf::Keyboard::Left) {
+                    FocusManager::GetInstance().ShiftFocusLeft();
+                } else if(e.Key.Code == sf::Keyboard::Up) {
+                    FocusManager::GetInstance().ShiftFocusUp();
+                } else if(e.Key.Code == sf::Keyboard::Down) {
+                    FocusManager::GetInstance().ShiftFocusDown();
                 }
             }
-            mgr.HandleEvent(e);
+            if(gui.HandleEvent(e)) {
+                // only handle the event if the GUI did not already
+                mgr.HandleEvent(e);
+            }
         }
 
         // UPDATE

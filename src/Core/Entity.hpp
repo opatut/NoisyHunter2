@@ -41,12 +41,11 @@ public:
 
 protected:
     float mLifetime;
+    std::map<QString, Entity*> mChildren;
 
 private:
     QString mName;
-
     Entity* mParent;
-    std::map<QString, Entity*> mChildren;
 };
 
 #endif
