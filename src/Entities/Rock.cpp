@@ -1,7 +1,7 @@
 #include "Rock.hpp"
 
-#include "Resources.hpp"
-#include "Torpedo.hpp"
+#include "Core/Resources.hpp"
+#include "Entities/Torpedo.hpp"
 
 Rock::Rock(QString name, QString type)
     : Entity(name) {

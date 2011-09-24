@@ -3,7 +3,7 @@
 
 #include <QString>
 
-#include "Entity.hpp"
+#include "Core/Entity.hpp"
 
 class Text: public Entity {
 public:

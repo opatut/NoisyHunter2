@@ -1,9 +1,8 @@
 #ifndef _MENU_STATE
 #define _MENU_STATE
 
-#include "State.hpp"
-
-#include "Entity.hpp"
+#include "Core/State.hpp"
+#include "Core/Entity.hpp"
 
 class MenuState : public State {
 public:

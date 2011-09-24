@@ -3,18 +3,17 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 
-#include "Submarine.hpp"
-#include "BackgroundGradient.hpp"
-#include "Resources.hpp"
-#include "Text.hpp"
-#include "Entity.hpp"
-#include "Narwhal.hpp"
-#include "Torpedo.hpp"
-#include "Level.hpp"
-
-#include "StateManager.hpp"
-#include "GameState.hpp"
-#include "MenuState.hpp"
+#include "Core/Entity.hpp"
+#include "Core/Resources.hpp"
+#include "Core/StateManager.hpp"
+#include "Entities/Level.hpp"
+#include "Entities/Narwhal.hpp"
+#include "Entities/Submarine.hpp"
+#include "Entities/Torpedo.hpp"
+#include "Hud/BackgroundGradient.hpp"
+#include "Hud/Text.hpp"
+#include "States/GameState.hpp"
+#include "States/MenuState.hpp"
 
 int main() {
     sf::RenderWindow app(sf::VideoMode(800, 600, 32), "NoisyHunter");
@@ -48,6 +47,8 @@ int main() {
     float avg_fps = 60;
 
     while(app.IsOpened()) {
+        mgr.PushStates();
+
         float time_diff = clock.GetElapsedTime() * 0.001;
         time += time_diff;
         clock.Reset();

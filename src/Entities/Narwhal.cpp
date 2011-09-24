@@ -1,6 +1,6 @@
 #include "Narwhal.hpp"
 
-#include "Resources.hpp"
+#include "Core/Resources.hpp"
 
 Narwhal::Narwhal(QString name)
     : Entity(name) {

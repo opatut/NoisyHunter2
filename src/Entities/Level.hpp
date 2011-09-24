@@ -1,7 +1,7 @@
 #ifndef _LEVEL
 #define _LEVEL
 
-#include "Entity.hpp"
+#include "Core/Entity.hpp"
 
 class Level : public Entity {
 public:

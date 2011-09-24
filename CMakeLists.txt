@@ -15,12 +15,13 @@ add_definitions(${QT_DEFINITIONS})
 include(${QT_USE_FILE})
 
 include_directories(
-	"${CMAKE_SOURCE_DIR}/engine/src/"
+	"${CMAKE_SOURCE_DIR}/src/"
 	${SFML_INCLUDE_DIRS}
 	${BULLET_INCLUDE_DIRS}
 )
 
-AUX_SOURCE_DIRECTORY(src/ sources)
+file(GLOB_RECURSE sources src/*.cpp)
+#AUX_SOURCE_DIRECTORY(src/ sources)
 
 add_executable(NoisyHunter
     ${sources})

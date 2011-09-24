@@ -1,7 +1,7 @@
 #ifndef _SUBMARINE
 #define _SUBMARINE
 
-#include "Entity.hpp"
+#include "Core/Entity.hpp"
 
 class Submarine : public Entity {
 public:

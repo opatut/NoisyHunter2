@@ -1,6 +1,6 @@
 #include "Torpedo.hpp"
 
-#include "Resources.hpp"
+#include "Core/Resources.hpp"
 
 Torpedo::Torpedo(QString name, Vector2D position, Vector2D speed, float rotation)
     : Entity(name) {

@@ -2,12 +2,12 @@
 
 #include <iostream>
 
-#include "Resources.hpp"
-#include "Text.hpp"
-#include "Level.hpp"
-#include "Narwhal.hpp"
-#include "BackgroundGradient.hpp"
-#include "Torpedo.hpp"
+#include "Core/Resources.hpp"
+#include "Hud/Text.hpp"
+#include "Entities/Level.hpp"
+#include "Entities/Narwhal.hpp"
+#include "Hud/BackgroundGradient.hpp"
+#include "Entities/Torpedo.hpp"
 
 GameState::GameState()
     : mScene("scene") {

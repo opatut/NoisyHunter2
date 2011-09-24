@@ -1,6 +1,8 @@
 #include "StateManager.hpp"
 
-StateManager::StateManager() {}
+StateManager::StateManager() {
+    mNextState = nullptr;
+}
 
 StateManager::~StateManager() {
     // pop all states
@@ -8,12 +10,7 @@ StateManager::~StateManager() {
 }
 
 void StateManager::AddState(State* state, float transition) {
-    if(GetCurrentState() != nullptr) {
-        GetCurrentState()->Deactivate();
-    }
-
-    mStates.push_back(state);
-    state->Activate();
+    mNextState = state;
 }
 
 State* StateManager::GetCurrentState() {
@@ -32,6 +29,18 @@ void StateManager::PopState(int count) {
             delete mStates.back();
             mStates.pop_back();
         }
+    }
+}
+
+void StateManager::PushStates() {
+    if(mNextState != nullptr) {
+        if(GetCurrentState() != nullptr) {
+            GetCurrentState()->Deactivate();
+        }
+
+        mStates.push_back(mNextState);
+        mNextState->Activate();
+        mNextState = nullptr;
     }
 }
 

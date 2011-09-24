@@ -1,6 +1,6 @@
 #include "Submarine.hpp"
 
-#include "Resources.hpp"
+#include "Core/Resources.hpp"
 
 #include <iostream>
 

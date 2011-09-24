@@ -1,7 +1,7 @@
 #ifndef _TORPEDO
 #define _TORPEDO
 
-#include "Entity.hpp"
+#include "Core/Entity.hpp"
 
 class Torpedo : public Entity {
 public:

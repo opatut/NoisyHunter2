@@ -1,10 +1,9 @@
 #ifndef _GAME_STATE
 #define _GAME_STATE
 
-#include "State.hpp"
-
-#include "Submarine.hpp"
-#include "Entity.hpp"
+#include "Core/State.hpp"
+#include "Core/Entity.hpp"
+#include "Entities/Submarine.hpp"
 
 class GameState : public State {
 public:

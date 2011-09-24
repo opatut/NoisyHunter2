@@ -1,7 +1,7 @@
 #ifndef _NARWHAL
 #define _NARWHAL
 
-#include "Entity.hpp"
+#include "Core/Entity.hpp"
 
 class Narwhal : public Entity {
 public:

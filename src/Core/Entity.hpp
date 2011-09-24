@@ -1,7 +1,7 @@
 #ifndef _ENTITY
 #define _ENTITY
 
-#include "Vector2D.hpp"
+#include "Core/Vector2D.hpp"
 #include <QString>
 #include <map>
 

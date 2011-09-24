@@ -1,8 +1,8 @@
 #include "Level.hpp"
 
-#include "Resources.hpp"
+#include "Core/Resources.hpp"
 
-#include "Rock.hpp"
+#include "Entities/Rock.hpp"
 
 Level::Level(QString name)
     : Entity(name) {

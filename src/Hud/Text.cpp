@@ -1,6 +1,6 @@
 #include "Text.hpp"
 
-#include "Resources.hpp"
+#include "Core/Resources.hpp"
 
 Text::Text(QString name, QString caption)
     : Entity(name) {

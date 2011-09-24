@@ -1,7 +1,7 @@
 #ifndef _BACKGROUND_GRADIENT
 #define _BACKGROUND_GRADIENT
 
-#include "Entity.hpp"
+#include "Core/Entity.hpp"
 
 class BackgroundGradient : public Entity {
 public:

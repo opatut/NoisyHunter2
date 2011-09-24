@@ -1,7 +1,7 @@
 #ifndef _STATE_MANAGER
 #define _STATE_MANAGER
 
-#include "State.hpp"
+#include "Core/State.hpp"
 
 class StateManager {
 public:
@@ -12,12 +12,15 @@ public:
     State* GetCurrentState();
     void PopState(int count = 1);
 
+    void PushStates();
+
     void HandleEvent(sf::Event& event);
     void Update(float time_diff);
     void Draw(sf::RenderTarget& target);
 
 private:
     std::vector<State*> mStates; // used as a stack --> back = current state
+    State* mNextState;
 };
 
 #endif

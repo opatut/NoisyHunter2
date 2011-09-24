@@ -1,7 +1,7 @@
 #ifndef _ROCK
 #define _ROCK
 
-#include "Entity.hpp"
+#include "Core/Entity.hpp"
 
 class Rock : public Entity {
 public:

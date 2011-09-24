@@ -1,8 +1,8 @@
 #include "MenuState.hpp"
 
-#include "Narwhal.hpp"
-#include "Resources.hpp"
-#include "Text.hpp"
+#include "Entities/Narwhal.hpp"
+#include "Core/Resources.hpp"
+#include "Hud/Text.hpp"
 
 MenuState::MenuState()
     : mScene("scene") {
