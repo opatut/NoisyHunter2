@@ -6,6 +6,7 @@
 #include "Hud/Text.hpp"
 #include "Entities/Level.hpp"
 #include "Entities/Narwhal.hpp"
+#include "Entities/Tile.hpp"
 #include "Hud/BackgroundGradient.hpp"
 #include "Entities/Torpedo.hpp"
 
@@ -24,7 +25,24 @@ GameState::GameState()
 
     mScene.AddChild(new Narwhal("narwhal-01"));
 
-    mScene.AddChild(new Level("level"));
+    // mScene.AddChild(new Level("level"));
+
+    Tile* t;
+    for(int i = 0; i < 3; ++i) {
+        for(int j = 0; j < 3; ++j) {
+            t = new Tile(i + j * 16);
+            t->Position.x = i * 32 + 100;
+            t->Position.y = j * 32 + 100;
+            mScene.AddChild(t);
+        }
+    }
+
+    for(int i = 0; i < 800; i += 32) {
+        t = new Tile(1);
+        t->Position.x = i;
+        t->Position.y = 600 - 32;
+        mScene.AddChild(t);
+    }
 }
 
 GameState::~GameState() {

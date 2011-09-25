@@ -37,7 +37,6 @@ bool Widget::HandleEvent(sf::Event& event) {
     }
 
     if(event.Type == sf::Event::MouseButtonPressed && _IsMouseInside()) {
-        std::cout << "event!" << std::endl;
         return OnClick(event.MouseButton.Button);
     }
 

@@ -2,6 +2,7 @@
 #define _BUTTON
 
 #include "Gui/Widget.hpp"
+#include "Core/Callback.hpp"
 
 class Button : public Widget {
 public:
@@ -12,8 +13,12 @@ public:
     virtual bool OnChangeCaption(QString old_caption, QString new_caption);
     virtual bool OnMouseOver();
 
+    Callback<sf::Mouse::Button>* ClickEvent;
+
 private:
     sf::Text mText;
+
+
 };
 
 #endif

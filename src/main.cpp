@@ -17,12 +17,19 @@
 #include "Gui/Widget.hpp"
 #include "Hud/BackgroundGradient.hpp"
 #include "Hud/Text.hpp"
+#include "States/EditorState.hpp"
 #include "States/GameState.hpp"
 #include "States/MenuState.hpp"
 
+sf::RenderWindow app;
+
+void CloseButtonClick(sf::Mouse::Button b) {
+    app.Close();
+}
+
 int main() {
     /* ======== Setup ======== */
-    sf::RenderWindow app(sf::VideoMode(800, 600, 32), "NoisyHunter");
+    app.Create(sf::VideoMode(800, 600, 32), "NoisyHunter");
     app.SetPosition(sf::VideoMode::GetDesktopMode().Width / 2 - 400, sf::VideoMode::GetDesktopMode().Height / 2 - 300);
     app.SetFramerateLimit(60);
     Input::GetInstance().SetDefaultWindow(app);
@@ -55,7 +62,7 @@ int main() {
     gui.Size = Vector2D(220, 200);
     gui.SetCaption("Test Panel");
 
-    Button* b;/*
+    Button* b;
     b = new Button("button1", "Campaign");
     b->Position.x = 10;
     b->Position.y = 10;
@@ -73,9 +80,10 @@ int main() {
     b->Position.y = 90;
     b->Size.x = 200;
     b->Size.y = 30;
-    gui.AddChild(b); */
+    b->ClickEvent = new Callback<sf::Mouse::Button>(&CloseButtonClick);
+    gui.AddChild(b);
 
-    for(int i = 0; i < 4; ++i) {
+    /* for(int i = 0; i < 4; ++i) {
         for(int j = 0; j < 4; ++j) {
             b = new Button("button-" + Resources::GetInstance().GetNextID(), "X");
             b->Position.x = j * 50;
@@ -83,7 +91,7 @@ int main() {
             b->Size = Vector2D(40, 40);
             gui.AddChild(b);
         }
-    }
+    }*/
 
     /* ======== Timing ======== */
     sf::Clock clock;
@@ -110,7 +118,7 @@ int main() {
                 if(e.Key.Code == sf::Keyboard::F12) {
                     app.Capture().SaveToFile("screenshot.png");
                 } else if(e.Key.Code == sf::Keyboard::Space) {
-                    mgr.AddState(new GameState(), 0);
+                    mgr.AddState(new EditorState(), 0);
                 } else if(e.Key.Code == sf::Keyboard::Q) {
                     if(e.Key.Control) {
                         // Ctrl + Q

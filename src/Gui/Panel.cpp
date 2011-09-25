@@ -4,6 +4,6 @@ Panel::Panel(QString name)
     : Widget(name) {}
 
 void Panel::Render() {
-    mRenderTexture.Clear(sf::Color(255,255,255,20));
+    mRenderTexture.Clear(sf::Color(120, 120, 120, 230));
 }
 

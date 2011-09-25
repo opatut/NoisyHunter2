@@ -12,6 +12,8 @@ Button::Button(QString name, QString caption)
 
     mText.SetFont(Resources::GetInstance().GetDefaultFont());
     mText.SetCharacterSize(11);
+
+    ClickEvent = new Callback<sf::Mouse::Button>();
 }
 
 void Button::Render() {
@@ -26,7 +28,7 @@ void Button::Render() {
 }
 
 bool Button::OnClick(sf::Mouse::Button button) {
-    std::cout << "Button click!" << std::endl;
+    ClickEvent->Call(button);
     return false;
 }
 

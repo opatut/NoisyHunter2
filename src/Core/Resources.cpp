@@ -55,7 +55,6 @@ const sf::Font& Resources::GetFont(QString filename) {
 }
 
 void Resources::_LoadFont(QString path, QString name) {
-    std::cout << "loading font" << std::endl;
     sf::Font font;
     font.LoadFromFile(path.toStdString());
     mFonts.insert(name, font);
@@ -64,7 +63,6 @@ void Resources::_LoadFont(QString path, QString name) {
 }
 
 void Resources::_LoadTexture(QString path, QString name) {
-    std::cout << "loading texture" << std::endl;
     sf::Texture texture;
     texture.LoadFromFile(path.toStdString());
     texture.SetSmooth(true);
