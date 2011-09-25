@@ -38,6 +38,7 @@ public:
     virtual bool OnMouseOut();
     virtual bool OnKeyDown(sf::Keyboard::Key key);
     virtual bool OnKeyUp(sf::Keyboard::Key key);
+    virtual bool OnTextEntered(uint32_t unicode);
     virtual bool OnFocus();
     virtual bool OnDefocus();
     virtual bool OnChangeCaption(QString old_caption, QString new_caption);

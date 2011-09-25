@@ -14,6 +14,7 @@
 #include "Gui/Button.hpp"
 #include "Gui/FocusManager.hpp"
 #include "Gui/Panel.hpp"
+#include "Gui/TextField.hpp"
 #include "Gui/Widget.hpp"
 #include "Hud/BackgroundGradient.hpp"
 #include "Hud/Text.hpp"
@@ -50,17 +51,18 @@ int main() {
     Entity overlay("debug_overlay");
     Text fps("fps", "?? FPS", Vector2D(795,580), 8, Text::TA_RIGHT | Text::TA_BOTTOM);
     overlay.AddChild(&fps);
-    overlay.AddChild(new Text("info", "Noisy Hunter // Build 2011-09-25", Vector2D(795, 595), 8, Text::TA_RIGHT | Text::TA_BOTTOM));
+    overlay.AddChild(new Text("info", "Noisy Hunter / Build " + QString(__DATE__), Vector2D(795, 595), 8, Text::TA_RIGHT | Text::TA_BOTTOM));
 
-    /* for(int i = 0; i < 4; ++i) {
-        for(int j = 0; j < 4; ++j) {
-            b = new Button("button-" + Resources::GetInstance().GetNextID(), "X");
-            b->Position.x = j * 50;
-            b->Position.y = i * 50;
-            b->Size = Vector2D(40, 40);
-            gui.AddChild(b);
-        }
-    }*/
+    /* ======== CONSOLE ======== */
+    Panel console("console", sf::Color(0, 0, 0, 200));
+    console.Position = Vector2D(30, -2);
+    console.Size = Vector2D(740, 500);
+    console.SetBorder(2.f, sf::Color(200, 200, 200));
+    bool mConsoleOpen = false;
+    TextField* ci = new TextField("console-input");
+    ci->Position = Vector2D(5, 470);
+    ci->Size = Vector2D(730, 25);
+    console.AddChild(ci);
 
     /* ======== Timing ======== */
     sf::Clock clock;
@@ -105,19 +107,33 @@ int main() {
                     FocusManager::GetInstance().ShiftFocusUp();
                 } else if(e.Key.Code == sf::Keyboard::Down) {
                     FocusManager::GetInstance().ShiftFocusDown();
+                } else if(e.Key.Code == sf::Keyboard::Dash) {
+                    mConsoleOpen = !mConsoleOpen;
+                    break;
                 }
+
+
             }
 
+            if(mConsoleOpen) {
+                console.HandleEvent(e);
+            }
             StateManager::GetInstance().HandleEvent(e);
         }
 
         // UPDATE
         StateManager::GetInstance().Update(time_diff);
+        if(mConsoleOpen) {
+            console.Update(time_diff);
+        }
         overlay.Update(time_diff);
 
         // DRAW
         app.Clear(sf::Color(0, 0, 0));
         StateManager::GetInstance().Draw(app);
+        if(mConsoleOpen) {
+            console.Draw(app);
+        }
         overlay.Draw(app);
         app.Display();
 

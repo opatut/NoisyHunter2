@@ -37,6 +37,7 @@ bool Widget::HandleEvent(sf::Event& event) {
     }
 
     if(event.Type == sf::Event::MouseButtonPressed && _IsMouseInside()) {
+        FocusManager::GetInstance().SetFocusWidget(this);
         return OnClick(event.MouseButton.Button);
     }
 
@@ -65,6 +66,10 @@ bool Widget::HandleEvent(sf::Event& event) {
 
     if(event.Type == sf::Event::KeyReleased) {
         return OnKeyUp(event.Key.Code);
+    }
+
+    if(event.Type == sf::Event::TextEntered) {
+        return OnTextEntered(event.Text.Unicode);
     }
 
     // do custom stuff
@@ -165,6 +170,10 @@ bool Widget::OnKeyDown(sf::Keyboard::Key key) {
 }
 
 bool Widget::OnKeyUp(sf::Keyboard::Key key) {
+    return true;
+}
+
+bool Widget::OnTextEntered(uint32_t unicode) {
     return true;
 }
 
