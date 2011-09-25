@@ -1,6 +1,7 @@
 #include "MenuState.hpp"
 
 #include "Entities/Narwhal.hpp"
+#include "Core/Input.hpp"
 #include "Core/Resources.hpp"
 #include "Core/StateManager.hpp"
 #include "Gui/Button.hpp"
@@ -13,7 +14,7 @@ MenuState::MenuState()
     mScene.AddChild(new Narwhal("narwhal" + Resources::GetInstance().GetNextID()));
 
     mHeadline2 = new Text("menu-headline", "Noisy Hunter");
-    mHeadline2->Position.x = 400;
+    mHeadline2->Position.x = Input::GetInstance().GetDefaultWindow().GetWidth() / 2;
     mHeadline2->Position.y = 100;
     mHeadline2->SetSize(36);
     mHeadline2->SetAlign(Text::TA_TOP);
@@ -21,7 +22,7 @@ MenuState::MenuState()
     mScene.AddChild(mHeadline2);
 
     mHeadline1 = new Text("menu-headline2", "Welcome to");
-    mHeadline1->Position.x = 400;
+    mHeadline1->Position.x = Input::GetInstance().GetDefaultWindow().GetWidth() / 2;
     mHeadline1->Position.y = 80;
     mHeadline1->SetSize(18);
     mHeadline1->SetAlign(Text::TA_TOP);
@@ -29,8 +30,8 @@ MenuState::MenuState()
     mScene.AddChild(mHeadline1);
 
     /* ======== GUI ======== */
-    mGui.Position = Vector2D(290, 215);
-    mGui.Size = Vector2D(220, 170);
+    mGui.Position = Vector2D(Input::GetInstance().GetDefaultWindow().GetWidth() / 2 - 100, Input::GetInstance().GetDefaultWindow().GetHeight() / 2  - 75);
+    mGui.Size = Vector2D(200, 150);
     mGui.SetCaption("Test Panel");
 
     Button* b;
@@ -72,8 +73,8 @@ void MenuState::OnUpdate(float time_diff) {
         mLifetime += time_diff;
 
         if(mLifetime < 2.5 * PI) {
-            mHeadline2->Position.x = sin(mLifetime * 0.2) * 50 + 350;
-            mHeadline1->Position.x = -sin(mLifetime * 0.2) * 50 + 450;
+            mHeadline2->Position.x = sin(mLifetime * 0.2) * 50 + Input::GetInstance().GetDefaultWindow().GetWidth() / 2 - 50;
+            mHeadline1->Position.x = -sin(mLifetime * 0.2) * 50 + Input::GetInstance().GetDefaultWindow().GetWidth() / 2 + 50;
         }
 
         mScene.Update(time_diff);

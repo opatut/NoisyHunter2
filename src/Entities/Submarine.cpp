@@ -1,6 +1,7 @@
 #include "Submarine.hpp"
 
 #include "Core/Resources.hpp"
+#include "Core/Input.hpp"
 #include "ParticleSystem.hpp"
 #include <iostream>
 
@@ -8,7 +9,7 @@ Submarine::Submarine(QString name)
     : Entity(name) {
     mSprite.SetTexture(Resources::GetInstance().GetTexture("gfx/submarine.png"));
     mSprite.SetOrigin(mSprite.GetSize().x / 2, mSprite.GetSize().y / 2);
-    Position = Vector2D(400, 300);
+    Position = Vector2D(Input::GetInstance().GetDefaultWindow().GetWidth() / 2, Input::GetInstance().GetDefaultWindow().GetHeight() / 2);
     mTargetAngle = 0;
     Scale(0.3);
 

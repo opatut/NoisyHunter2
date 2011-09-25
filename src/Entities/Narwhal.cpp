@@ -15,7 +15,7 @@ Narwhal::Narwhal(QString name)
 void Narwhal::OnUpdate(float time_diff) {
     Rotation = sin(mLifetime) * 0.3;
 
-    if(Speed.x > 0 && Position.x > 800)
+    if(Speed.x > 0 && Position.x > 100)
         Speed.x *= -1;
 
     if(Speed.x < 0 && Position.x < 0)

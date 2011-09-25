@@ -9,12 +9,13 @@ BackgroundGradient::BackgroundGradient(QString name)
 void BackgroundGradient::SetColors(sf::Color top, sf::Color bottom) {
     mShape = sf::Shape();
     mShape.AddPoint(0, 0, top);
-    mShape.AddPoint(800, 0, top);
-    mShape.AddPoint(800, 600, bottom);
-    mShape.AddPoint(0, 600, bottom);
+    mShape.AddPoint(1, 0, top);
+    mShape.AddPoint(1, 1, bottom);
+    mShape.AddPoint(0, 1, bottom);
     mShape.SetOutlineThickness(0.f);
 }
 
 void BackgroundGradient::OnDraw(sf::RenderTarget& target) {
+    mShape.SetScale(target.GetWidth(), target.GetHeight());
     target.Draw(mShape);
 }

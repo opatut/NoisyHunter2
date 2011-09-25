@@ -21,14 +21,14 @@ void EditorState::OnDraw(sf::RenderTarget& target) {
         mScene.Draw(target);
         mGuiPanel.Draw(target);
 
-        sf::Shape h = sf::Shape::Line(0,0,800,0,1.f,sf::Color(255,255,255,20));
-        for(int i = 0; i < 600; i += 32) {
+        sf::Shape h = sf::Shape::Line(0,0,target.GetWidth(),0,1.f,sf::Color(255,255,255,20));
+        for(unsigned int i = 0; i < target.GetHeight(); i += 32) {
             h.SetPosition(0, i);
             target.Draw(h);
         }
 
-        sf::Shape v = sf::Shape::Line(0,0,0,600,1.f,sf::Color(255,255,255,20));
-        for(int i = 0; i < 800; i += 32) {
+        sf::Shape v = sf::Shape::Line(0,0,0,target.GetHeight(),1.f,sf::Color(255,255,255,20));
+        for(unsigned int i = 0; i < target.GetWidth(); i += 32) {
             v.SetPosition(i, 0);
             target.Draw(v);
         }

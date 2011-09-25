@@ -54,17 +54,12 @@ GameState::~GameState() {
 
 void GameState::OnUpdate(float time_diff) {
     if(IsActive()) {
-
-        // Vector2D v(mScene.Position + Vector2D(400, 300));
         Vector2D speed = mSubmarine->GetAbsoluteSpeed();
         speed.Rotate(mSubmarine->GetAbsoluteRotation());
         float x = 3.f; // move view to where we'll be in x seconds
-        Vector2D target = Vector2D(400,300) - mSubmarine->Position - speed * x;
-
+        Vector2D target = Vector2D(Input::GetInstance().GetDefaultWindow().GetWidth() / 2, Input::GetInstance().GetDefaultWindow().GetHeight() / 2) - mSubmarine->Position - speed * x;
         Vector2D diff = target - mScene.Position;
         mScene.Move(diff * time_diff);
-
-        // mScene.Position = ;
 
         mScene.Update(time_diff);
     }

@@ -29,14 +29,15 @@ void do_console_command(void* sender, QString cmd) {
 
 int main() {
     /* ======== Setup ======== */
-    sf::RenderWindow app(sf::VideoMode(800, 600, 32), "NoisyHunter");
-    app.SetPosition(sf::VideoMode::GetDesktopMode().Width / 2 - 400, sf::VideoMode::GetDesktopMode().Height / 2 - 300);
+    sf::RenderWindow app(sf::VideoMode::GetDesktopMode(), "NoisyHunter", sf::Style::Fullscreen);
+    // sf::RenderWindow app(sf::VideoMode(1024, 768, 32), "NoisyHunter");
+    // app.SetPosition(sf::VideoMode::GetDesktopMode().Width / 2 - app.GetWidth() / 2, sf::VideoMode::GetDesktopMode().Height / 2 - app.GetHeight() / 2);
     app.SetFramerateLimit(60);
 
     app.Clear();
     sf::Text loading("Loading ...");
     loading.SetCharacterSize(12);
-    loading.SetPosition(round(400 - loading.GetRect().Width / 2), round(300 - loading.GetRect().Height / 2));
+    loading.SetPosition(round(app.GetWidth() / 2 - loading.GetRect().Width / 2), round(app.GetHeight() / 2- loading.GetRect().Height / 2));
     app.Draw(loading);
     app.Display();
 
@@ -49,20 +50,20 @@ int main() {
 
     /* ======== Debug Overlay ======== */
     Entity overlay("debug_overlay");
-    Text fps("fps", "?? FPS", Vector2D(795,575), 12, Text::TA_RIGHT | Text::TA_BOTTOM);
+    Text fps("fps", "?? FPS", Vector2D(app.GetWidth() - 5, app.GetHeight() - 25), 12, Text::TA_RIGHT | Text::TA_BOTTOM);
     overlay.AddChild(&fps);
-    overlay.AddChild(new Text("info", "Noisy Hunter / Build " + QString(__DATE__), Vector2D(795, 595), 12, Text::TA_RIGHT | Text::TA_BOTTOM));
+    overlay.AddChild(new Text("info", "Noisy Hunter / Build " + QString(__DATE__), Vector2D(app.GetWidth() - 5, app.GetHeight() - 5), 12, Text::TA_RIGHT | Text::TA_BOTTOM));
 
     /* ======== CONSOLE ======== */
     Panel console("console", sf::Color(0, 0, 0, 200));
     console.Position = Vector2D(30, -2);
-    console.Size = Vector2D(740, 500);
+    console.Size = Vector2D(app.GetWidth() - 60, app.GetHeight() * 0.6);
     console.SetBorder(2.f, sf::Color(200, 200, 200));
     console.Hide();
 
     TextField* ci = new TextField("console-input");
-    ci->Position = Vector2D(5, 470);
-    ci->Size = Vector2D(730, 25);
+    ci->Position = Vector2D(5, app.GetHeight() * 0.6 - 30);
+    ci->Size = Vector2D(app.GetWidth() - 70, 25);
     ci->EventSubmitField = new Callback<QString>(&do_console_command);
     console.AddChild(ci);
 

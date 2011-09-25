@@ -1,10 +1,10 @@
 #include "StateManager.hpp"
 
+#include "Input.hpp"
 #include <iostream>
 
 StateManager::StateManager() {
     mNextState = nullptr;
-    mRenderTexture.Create(800, 600);
 }
 
 StateManager::~StateManager() {
@@ -96,6 +96,8 @@ void StateManager::Draw(sf::RenderTarget& target) {
         if(iter == mStates.end() - 1 || (*(iter + 1))->GetTransitionState().IsTransitioning()) {
             TransitionState ts = (*iter)->GetTransitionState();
             if(ts.IsTransitioning()) {
+                if(mRenderTexture.GetHeight() == 0)
+                    mRenderTexture.Create(Input::GetInstance().GetDefaultWindow().GetWidth(), Input::GetInstance().GetDefaultWindow().GetHeight());
                 mRenderTexture.Clear(sf::Color(0,0,0,0));
                 (*iter)->Draw(mRenderTexture);
                 mRenderTexture.Display();
