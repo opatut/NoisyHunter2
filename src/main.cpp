@@ -22,15 +22,14 @@
 #include "States/GameState.hpp"
 #include "States/MenuState.hpp"
 
-sf::RenderWindow app;
-
-void CloseButtonClick(sf::Mouse::Button b) {
-    app.Close();
+void do_console_command(void* sender, QString cmd) {
+    std::cout << "Console > " << cmd.toStdString() << std::endl;
+    ((TextField*)sender)->SetCaption("");
 }
 
 int main() {
     /* ======== Setup ======== */
-    app.Create(sf::VideoMode(800, 600, 32), "NoisyHunter");
+    sf::RenderWindow app(sf::VideoMode(800, 600, 32), "NoisyHunter");
     app.SetPosition(sf::VideoMode::GetDesktopMode().Width / 2 - 400, sf::VideoMode::GetDesktopMode().Height / 2 - 300);
     app.SetFramerateLimit(60);
 
@@ -43,15 +42,16 @@ int main() {
 
     Input::GetInstance().SetDefaultWindow(app);
     Resources::GetInstance().LoadPath(QDir("../data"));
+    Resources::GetInstance().SetDefaultFont("fonts/nouveau_ibm.ttf");
 
     /* ======== States ======== */
     StateManager::GetInstance().AddState(new MenuState());
 
     /* ======== Debug Overlay ======== */
     Entity overlay("debug_overlay");
-    Text fps("fps", "?? FPS", Vector2D(795,580), 8, Text::TA_RIGHT | Text::TA_BOTTOM);
+    Text fps("fps", "?? FPS", Vector2D(795,575), 12, Text::TA_RIGHT | Text::TA_BOTTOM);
     overlay.AddChild(&fps);
-    overlay.AddChild(new Text("info", "Noisy Hunter / Build " + QString(__DATE__), Vector2D(795, 595), 8, Text::TA_RIGHT | Text::TA_BOTTOM));
+    overlay.AddChild(new Text("info", "Noisy Hunter / Build " + QString(__DATE__), Vector2D(795, 595), 12, Text::TA_RIGHT | Text::TA_BOTTOM));
 
     /* ======== CONSOLE ======== */
     Panel console("console", sf::Color(0, 0, 0, 200));
@@ -62,6 +62,7 @@ int main() {
     TextField* ci = new TextField("console-input");
     ci->Position = Vector2D(5, 470);
     ci->Size = Vector2D(730, 25);
+    ci->EventSubmitField = new Callback<QString>(&do_console_command);
     console.AddChild(ci);
 
     /* ======== Timing ======== */
@@ -90,6 +91,7 @@ int main() {
             if(e.Type == sf::Event::Closed) {
                 app.Close();
             } else if(e.Type == sf::Event::KeyPressed) {
+
                 if(e.Key.Code == sf::Keyboard::F12) {
                     app.Capture().SaveToFile("screenshot.png");
                 } else if(e.Key.Code == sf::Keyboard::Q) {
@@ -111,13 +113,12 @@ int main() {
                     mConsoleOpen = !mConsoleOpen;
                     break;
                 }
-
-
             }
 
-            if(mConsoleOpen) {
-                console.HandleEvent(e);
-            }
+
+            if(mConsoleOpen && !console.HandleEvent(e))
+                continue;
+
             StateManager::GetInstance().HandleEvent(e);
         }
 

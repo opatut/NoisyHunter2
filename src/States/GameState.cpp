@@ -17,13 +17,6 @@ GameState::GameState()
     mSubmarine = new Submarine("submarine");
     mScene.AddChild(mSubmarine);
 
-    Text* name = new Text("name", "opatut");
-    name->Position.x = 0;
-    name->Position.y = -24;
-    name->SetAlign(Text::TA_BOTTOM);
-    name->SetSize(9);
-    mSubmarine->AddChild(name);
-
     mScene.AddChild(new Narwhal("narwhal-01"));
 
     // mScene.AddChild(new Level("level"));

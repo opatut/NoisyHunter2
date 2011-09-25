@@ -15,7 +15,7 @@ MenuState::MenuState()
     mHeadline2 = new Text("menu-headline", "Noisy Hunter");
     mHeadline2->Position.x = 400;
     mHeadline2->Position.y = 100;
-    mHeadline2->SetSize(28);
+    mHeadline2->SetSize(36);
     mHeadline2->SetAlign(Text::TA_TOP);
     mHeadline2->SetAlignToPixel(false);
     mScene.AddChild(mHeadline2);
@@ -23,7 +23,7 @@ MenuState::MenuState()
     mHeadline1 = new Text("menu-headline2", "Welcome to");
     mHeadline1->Position.x = 400;
     mHeadline1->Position.y = 80;
-    mHeadline1->SetSize(14);
+    mHeadline1->SetSize(18);
     mHeadline1->SetAlign(Text::TA_TOP);
     mHeadline1->SetAlignToPixel(false);
     mScene.AddChild(mHeadline1);
@@ -35,29 +35,31 @@ MenuState::MenuState()
 
     Button* b;
 
+    int bh = 40;
+
     b = new Button("campaign-button", "Campaign");
-    b->Position = Vector2D(10, 10);
-    b->Size = Vector2D(200, 30);
-    b->ClickEvent = new ClassCallback<MenuState, sf::Mouse::Button>(this, &MenuState::CampaignButtonClick);
+    b->Position = Vector2D(0, 0);
+    b->Size = Vector2D(200, bh);
+    b->EventClick = new ClassCallback<MenuState, sf::Mouse::Button>(this, &MenuState::MenuButtonClick);
     mGui.AddChild(b);
 
     b = new Button("editor-button", "Editor");
-    b->Position = Vector2D(10, 50);
-    b->Size = Vector2D(200, 30);
-    b->ClickEvent = new ClassCallback<MenuState, sf::Mouse::Button>(this, &MenuState::EditorButtonClick);
+    b->Position = Vector2D(0, 1 * bh + 1 * 10);
+    b->Size = Vector2D(200, bh);
+    b->EventClick = new ClassCallback<MenuState, sf::Mouse::Button>(this, &MenuState::MenuButtonClick);
     mGui.AddChild(b);
 
 
     b = new Button("options-button", "Options");
-    b->Position = Vector2D(10, 90);
-    b->Size = Vector2D(200, 30);
-    // b->ClickEvent = new ClassCallback<MenuState, sf::Mouse::Button>(this, &MenuState::OptionsButtonClick);
+    b->Position = Vector2D(0, 2 * bh + 2 * 10);
+    b->Size = Vector2D(200, bh);
+    b->EventClick = new ClassCallback<MenuState, sf::Mouse::Button>(this, &MenuState::MenuButtonClick);
     mGui.AddChild(b);
 
-    b = new Button("button3", "Quit");
-    b->Position = Vector2D(10, 130);
-    b->Size = Vector2D(200, 30);
-    b->ClickEvent = new ClassCallback<MenuState, sf::Mouse::Button>(this, &MenuState::CloseButtonClick);
+    b = new Button("quit-button", "Quit");
+    b->Position = Vector2D(0, 3 * bh + 3 * 10);
+    b->Size = Vector2D(200, bh);
+    b->EventClick = new ClassCallback<MenuState, sf::Mouse::Button>(this, &MenuState::MenuButtonClick);
     mGui.AddChild(b);
 }
 
@@ -97,14 +99,13 @@ void MenuState::OnHandleEvent(sf::Event& event) {
     }
 }
 
-void MenuState::CloseButtonClick(sf::Mouse::Button button) {
-    StartTransitionOut(1.f);
-}
-
-void MenuState::CampaignButtonClick(sf::Mouse::Button button) {
-    StateManager::GetInstance().AddState(new GameState());
-}
-
-void MenuState::EditorButtonClick(sf::Mouse::Button button) {
-    StateManager::GetInstance().AddState(new EditorState());
+void MenuState::MenuButtonClick(void* sender, sf::Mouse::Button button) {
+    Button* b = (Button*)sender;
+    if(b->GetName() == "campaign-button") {
+        StateManager::GetInstance().AddState(new GameState());
+    } else if(b->GetName() == "editor-button") {
+        StateManager::GetInstance().AddState(new EditorState());
+    } else if(b->GetName() == "quit-button") {
+        StartTransitionOut(1.f);
+    }
 }

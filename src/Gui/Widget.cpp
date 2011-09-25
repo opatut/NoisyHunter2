@@ -8,6 +8,16 @@ Widget::Widget(QString name)
     : Entity(name) {
     FocusManager::GetInstance().RegisterWidget(this);
     mState = -1; // force refresh on next draw
+
+    EventClick = new Callback<sf::Mouse::Button>();
+    EventMouseButtonReleased = new Callback<sf::Mouse::Button>();
+    EventMouseOver = new Callback<>();
+    EventMouseOut = new Callback<>();
+    EventKeyDown = new Callback<sf::Keyboard::Key>();
+    EventKeyUp = new Callback<sf::Keyboard::Key>();
+    EventTextEntered = new Callback<uint32_t>();
+    EventChangeFocus = new Callback<bool>();
+    EventChangeCaption = new Callback<QString, QString>();
 }
 
 Widget::~Widget() {
@@ -38,10 +48,12 @@ bool Widget::HandleEvent(sf::Event& event) {
 
     if(event.Type == sf::Event::MouseButtonPressed && _IsMouseInside()) {
         FocusManager::GetInstance().SetFocusWidget(this);
+        EventClick->Call(this, event.MouseButton.Button);
         return OnClick(event.MouseButton.Button);
     }
 
     if(event.Type == sf::Event::MouseButtonReleased && _IsMouseInside()) {
+        EventMouseButtonReleased->Call(this, event.MouseButton.Button);
         return OnMouseButtonReleased(event.MouseButton.Button);
     }
 
@@ -51,24 +63,29 @@ bool Widget::HandleEvent(sf::Event& event) {
 
         // we are now hovered but weren't before
         if(_IsMouseInside() && !was_hover) {
+            EventMouseOver->Call(this);
             return OnMouseOver();
         }
 
         // we are not hovered but were before
         if(!_IsMouseInside() && was_hover) {
+            EventMouseOut->Call(this);
             return OnMouseOut();
         }
     }
 
     if(event.Type == sf::Event::KeyPressed) {
+        EventKeyDown->Call(this, event.Key.Code);
         return OnKeyDown(event.Key.Code);
     }
 
     if(event.Type == sf::Event::KeyReleased) {
+        EventKeyUp->Call(this, event.Key.Code);
         return OnKeyUp(event.Key.Code);
     }
 
     if(event.Type == sf::Event::TextEntered) {
+        EventTextEntered->Call(this, event.Text.Unicode);
         return OnTextEntered(event.Text.Unicode);
     }
 
@@ -94,6 +111,10 @@ bool Widget::IsHover() {
 
 bool Widget::HasFocus() {
     return (mState & WS_FOCUS) == WS_FOCUS;
+}
+
+bool Widget::IsVisible() {
+    return (mState & WS_VISIBLE) == WS_VISIBLE;
 }
 
 void Widget::SetCaption(QString caption) {
@@ -130,6 +151,8 @@ bool Widget::_IsMouseInside() {
 
 void Widget::_AdjustWidgetState() {
     int before = mState;
+    bool hover_before = IsHover();
+    bool focus_before = HasFocus();
 
     mState = WS_NORMAL;
     if(_IsMouseInside()) {
@@ -139,10 +162,16 @@ void Widget::_AdjustWidgetState() {
     if(FocusManager::GetInstance().GetFocusWidget() == this) {
         mState |= WS_FOCUS;
     }
-
-    // TODO: Active
+    // TODO: Visible?
 
     if(mState != before) {
+        if(hover_before != IsHover()) {
+            // TODO: Toggle hover event
+        }
+        if(focus_before != HasFocus()) {
+            EventChangeFocus->Call(this, HasFocus());
+            OnChangeFocus(HasFocus());
+        }
         _Refresh();
     }
 }
@@ -177,11 +206,7 @@ bool Widget::OnTextEntered(uint32_t unicode) {
     return true;
 }
 
-bool Widget::OnFocus() {
-    return true;
-}
-
-bool Widget::OnDefocus() {
+bool Widget::OnChangeFocus(bool focus) {
     return true;
 }
 

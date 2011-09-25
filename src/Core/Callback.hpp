@@ -10,17 +10,17 @@ public:
         Function = nullptr;
     }
 
-    Callback(void (*function)(Args...)) {
+    Callback(void (*function)(void* sender, Args...)) {
         Function = function;
     }
 
-    virtual void Call(Args... args) {
+    virtual void Call(void* sender, Args... args) {
         if(Function != nullptr) {
-            (*Function)(args...);
+            (*Function)(sender, args...);
         }
     }
 
-    void (*Function)(Args...);
+    void (*Function)(void* sender, Args...);
 };
 
 template <typename OBJ, typename... Args>
@@ -31,21 +31,21 @@ public:
         mObject = nullptr;
     }
 
-    ClassCallback(OBJ* object, void (OBJ::*function)(Args...)) {
+    ClassCallback(OBJ* object, void (OBJ::*function)(void* sender, Args...)) {
         mFunction = function;
         mObject = object;
     }
 
-    virtual void Call(Args... args) {
+    virtual void Call(void* sender, Args... args) {
         if(mFunction != nullptr && mObject != nullptr) {
             // mObject->*mFunction(args...);
-            (mObject->*((ClassCallback<OBJ, Args...>*)this)->ClassCallback<OBJ, Args...>::mFunction)(args...);
+            (mObject->*((ClassCallback<OBJ, Args...>*)this)->ClassCallback<OBJ, Args...>::mFunction)(sender, args...);
         }
     }
 
 private:
     OBJ* mObject;
-    void (OBJ::*mFunction)(Args...);
+    void (OBJ::*mFunction)(void* sender, Args...);
 };
 
 #endif

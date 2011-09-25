@@ -1,0 +1,56 @@
+Gameplay Mechanism
+==================
+- Huge, destructable environment
+    > Also placing new tiles (walls)
+    > Chance to find something valuable behind walls
+    > Minimap
+- Supplies
+    > Ammo (Torpedos)
+    > Explosive Mines
+    > Sonar mines
+    > GPS transmitter
+- Sonar modes
+    > off
+    > single
+    > interval
+    > noisy
+- Submarine upgrades
+    > Driller robot
+    > More torpedo slots -> faster cooldown
+    > Better torpedos
+- Various
+    > Narwhals follow you around when in Noisy Mode
+
+Campaign
+========
+- Military missions
+    > Search & Destroy
+    > Defend
+    > Escort
+- Research missions
+    > Find a shipwreck / retrieve container
+    > Analyse narwhals
+
+Multiplayer
+===========
+- Coop
+    > see above
+- PVP
+    > Capture the Flag
+    > Bombing run
+    > Team Deathmatch
+    > Free for all
+    > Attack & Defend
+    > Domination (capture all bases)
+
+Achievements
+============
+- Treasure hunter: Find x shipwrecks
+- Narwhal Family: see 4 narwhals on your screen
+- 
+
+Controls
+========
+- WASD/Arrow-Movement
+- Mouse/1-9 extra selection
+- E = Action key (attach GPS / Drop mine / Shoot Torpedo)

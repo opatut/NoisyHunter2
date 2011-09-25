@@ -15,9 +15,7 @@ public:
     virtual void OnDraw(sf::RenderTarget& target);
     virtual void OnHandleEvent(sf::Event& event);
 
-    void CampaignButtonClick(sf::Mouse::Button button);
-    void EditorButtonClick(sf::Mouse::Button button);
-    void CloseButtonClick(sf::Mouse::Button button);
+    void MenuButtonClick(void* sender, sf::Mouse::Button button);
 
 private:
     Text* mHeadline1, *mHeadline2;

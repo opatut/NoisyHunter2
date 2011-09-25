@@ -11,15 +11,19 @@ Button::Button(QString name, QString caption)
     SetCaption(caption != "" ? caption : name);
 
     mText.SetFont(Resources::GetInstance().GetDefaultFont());
-    mText.SetCharacterSize(11);
+    mText.SetCharacterSize(16);
 
-    ClickEvent = new Callback<sf::Mouse::Button>();
+    mBackground.SetTexture(Resources::GetInstance().GetTexture("gfx/gui.png"));
 }
 
 void Button::Render() {
     // draw the shape
-    sf::Shape shape = sf::Shape::Rectangle(1, 1, Size.x - 2, Size.y - 2, sf::Color(255, 255, 255, (HasFocus() ? 100 : 50)), 2.f, sf::Color::White);
-    mRenderTexture.Draw(shape);
+    //sf::Shape shape = sf::Shape::Rectangle(1, 1, Size.x - 2, Size.y - 2, sf::Color(255, 255, 255, (HasFocus() ? 100 : 50)), 2.f, sf::Color::White);
+    // mRenderTexture.Draw(shape);
+    mBackground.SetPosition(0, 0);
+    mBackground.SetScale(Size.x, Size.y);
+    mBackground.SetSubRect(sf::IntRect(0, (HasFocus() ? 40 : 0), 200, 40));
+    mRenderTexture.Draw(mBackground);
 
     // draw the text
     mText.SetColor(sf::Color::White);
@@ -28,7 +32,6 @@ void Button::Render() {
 }
 
 bool Button::OnClick(sf::Mouse::Button button) {
-    ClickEvent->Call(button);
     return false;
 }
 
