@@ -105,10 +105,17 @@ FocusManager::FocusManager() {
 }
 
 void FocusManager::_SetFocus(int focus) {
+    Widget* old_focus = GetFocusWidget();
     mFocus = focus;
     _FixFocus();
     while(!GetFocusWidget()->CanHaveFocus() && mWidgets.size() > 0) {
         UnregisterWidget(GetFocusWidget());
         _FixFocus();
+    }
+
+    while(!GetFocusWidget()->IsVisible()) {
+        ShiftFocus(1);
+        if(GetFocusWidget() == old_focus)
+            break; // shit, seems like we wrapped around
     }
 }

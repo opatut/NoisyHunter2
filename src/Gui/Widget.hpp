@@ -34,6 +34,9 @@ public:
     void SetCaption(QString caption);
     QString GetCaption();
 
+    void Show();
+    void Hide();
+
     virtual bool OnClick(sf::Mouse::Button button);
     virtual bool OnMouseButtonReleased(sf::Mouse::Button button);
     virtual bool OnMouseOver();

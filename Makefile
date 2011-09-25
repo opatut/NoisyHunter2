@@ -9,6 +9,10 @@ run:
 
 go: bake run
 
+gdb: bake
+	cd bin; gdb ./NoisyHunter
+
+
 clean:
 	rm -r build
 	rm -r doc

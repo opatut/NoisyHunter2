@@ -12,6 +12,9 @@ TextField::TextField(QString name)
 }
 
 void TextField::Render() {
+    std::string caption(mCaption.toUtf8().data());
+    mText.SetString(caption + (HasFocus() ? "_" : ""));
+
     sf::Color c = HasFocus() ? sf::Color::White : sf::Color(255, 255, 255, 150);
 
     // draw the shape
@@ -47,9 +50,8 @@ bool TextField::OnTextEntered(uint32_t unicode) {
     return true;
 }
 
-bool TextField::OnChangeCaption(QString old_caption, QString new_caption) {
-    std::string c(new_caption.toUtf8().data());
-    mText.SetString(c + "_");
+bool TextField::OnChangeFocus(bool focus) {
+    _Refresh();
     return true;
 }
 

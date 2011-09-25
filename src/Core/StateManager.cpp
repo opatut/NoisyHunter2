@@ -38,7 +38,7 @@ void StateManager::PopState(int count) {
             mStates.pop_back();
         }
     }
-    if(count > 0) {
+    if(count > 0 && mStates.size() > 0) {
         mStates.back()->Activate();
     }
 }
@@ -63,6 +63,10 @@ void StateManager::HandleEvent(sf::Event& event) {
 }
 
 void StateManager::Update(float time_diff) {
+    if(mStates.size() == 0) {
+        return;
+    }
+
     // update in reverse order (in vector order)
     for(std::vector<State*>::iterator iter = mStates.begin(); iter != mStates.end(); ++iter) {
         mStates.back()->Update(time_diff);
@@ -80,7 +84,7 @@ void StateManager::Update(float time_diff) {
             second_last->Activate();
     }
 
-    while(GetCurrentState()->GetTransitionState().State == TransitionState::AFTER) {
+    while(mStates.size() > 0 && GetCurrentState()->GetTransitionState().State == TransitionState::AFTER) {
         PopState(1);
     }
 }

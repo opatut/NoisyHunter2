@@ -58,7 +58,8 @@ int main() {
     console.Position = Vector2D(30, -2);
     console.Size = Vector2D(740, 500);
     console.SetBorder(2.f, sf::Color(200, 200, 200));
-    bool mConsoleOpen = false;
+    console.Hide();
+
     TextField* ci = new TextField("console-input");
     ci->Position = Vector2D(5, 470);
     ci->Size = Vector2D(730, 25);
@@ -109,32 +110,29 @@ int main() {
                     FocusManager::GetInstance().ShiftFocusUp();
                 } else if(e.Key.Code == sf::Keyboard::Down) {
                     FocusManager::GetInstance().ShiftFocusDown();
-                } else if(e.Key.Code == sf::Keyboard::Dash) {
-                    mConsoleOpen = !mConsoleOpen;
-                    break;
+                } else if(e.Key.Code == sf::Keyboard::F1) {
+                    if(console.IsVisible())
+                        console.Hide();
+                    else
+                        console.Show();
                 }
             }
 
 
-            if(mConsoleOpen && !console.HandleEvent(e))
-                continue;
+            console.HandleEvent(e);
 
             StateManager::GetInstance().HandleEvent(e);
         }
 
         // UPDATE
         StateManager::GetInstance().Update(time_diff);
-        if(mConsoleOpen) {
-            console.Update(time_diff);
-        }
+        console.Update(time_diff);
         overlay.Update(time_diff);
 
         // DRAW
         app.Clear(sf::Color(0, 0, 0));
         StateManager::GetInstance().Draw(app);
-        if(mConsoleOpen) {
-            console.Draw(app);
-        }
+        console.Draw(app);
         overlay.Draw(app);
         app.Display();
 

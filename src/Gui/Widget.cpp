@@ -18,6 +18,8 @@ Widget::Widget(QString name)
     EventTextEntered = new Callback<uint32_t>();
     EventChangeFocus = new Callback<bool>();
     EventChangeCaption = new Callback<QString, QString>();
+
+    Show();
 }
 
 Widget::~Widget() {
@@ -28,15 +30,20 @@ void Widget::OnUpdate(float time_diff) {
 }
 
 void Widget::OnDraw(sf::RenderTarget& target) {
-    _AdjustWidgetState();
+    if(IsVisible()) {
+        _AdjustWidgetState();
 
-    sf::Sprite sprite;
-    sprite.SetTexture(mRenderTexture.GetTexture(), true);
-    sprite.SetPosition(GetAbsolutePosition().x, GetAbsolutePosition().y);
-    target.Draw(sprite);
+        sf::Sprite sprite;
+        sprite.SetTexture(mRenderTexture.GetTexture(), true);
+        sprite.SetPosition(GetAbsolutePosition().x, GetAbsolutePosition().y);
+        target.Draw(sprite);
+    }
 }
 
 bool Widget::HandleEvent(sf::Event& event) {
+    if(!IsVisible())
+        return true;
+
     // handle event in children
     // children are usually in front of their parent, so they have to be
     // handled first
@@ -114,6 +121,8 @@ bool Widget::HasFocus() {
 }
 
 bool Widget::IsVisible() {
+    if(GetParent() != nullptr && !((Widget*)GetParent())->IsVisible())
+        return false;
     return (mState & WS_VISIBLE) == WS_VISIBLE;
 }
 
@@ -126,6 +135,18 @@ void Widget::SetCaption(QString caption) {
 
 QString Widget::GetCaption() {
     return mCaption;
+}
+
+void Widget::Show() {
+    if((mState & WS_VISIBLE) != WS_VISIBLE) {
+        mState ^= WS_VISIBLE;
+    }
+}
+
+void Widget::Hide() {
+    if((mState & WS_VISIBLE) == WS_VISIBLE) {
+        mState ^= WS_VISIBLE;
+    }
 }
 
 void Widget::_Refresh() {
@@ -153,6 +174,7 @@ void Widget::_AdjustWidgetState() {
     int before = mState;
     bool hover_before = IsHover();
     bool focus_before = HasFocus();
+    bool visible_before = ((mState & WS_VISIBLE) == WS_VISIBLE);
 
     mState = WS_NORMAL;
     if(_IsMouseInside()) {
@@ -162,7 +184,11 @@ void Widget::_AdjustWidgetState() {
     if(FocusManager::GetInstance().GetFocusWidget() == this) {
         mState |= WS_FOCUS;
     }
-    // TODO: Visible?
+
+    if(visible_before) {
+        mState |= WS_VISIBLE;
+    }
+
 
     if(mState != before) {
         if(hover_before != IsHover()) {
