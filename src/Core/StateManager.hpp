@@ -5,8 +5,8 @@
 
 class StateManager {
 public:
-    StateManager();
     ~StateManager();
+    static StateManager& GetInstance();
 
     void AddState(State* state, float transition = 0.f);
     State* GetCurrentState();
@@ -19,8 +19,11 @@ public:
     void Draw(sf::RenderTarget& target);
 
 private:
+    StateManager();
+
     std::vector<State*> mStates; // used as a stack --> back = current state
     State* mNextState;
+    sf::RenderTexture mRenderTexture;
 };
 
 #endif

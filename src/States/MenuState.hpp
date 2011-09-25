@@ -3,6 +3,7 @@
 
 #include "Core/State.hpp"
 #include "Core/Entity.hpp"
+#include "Gui/Panel.hpp"
 
 class MenuState : public State {
 public:
@@ -13,8 +14,13 @@ public:
     virtual void OnDraw(sf::RenderTarget& target);
     virtual void OnHandleEvent(sf::Event& event);
 
+    void CampaignButtonClick(sf::Mouse::Button button);
+    void EditorButtonClick(sf::Mouse::Button button);
+    void CloseButtonClick(sf::Mouse::Button button);
+
 private:
     Entity mScene;
+    Panel mGui;
 
 };
 

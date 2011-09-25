@@ -32,12 +32,19 @@ int main() {
     app.Create(sf::VideoMode(800, 600, 32), "NoisyHunter");
     app.SetPosition(sf::VideoMode::GetDesktopMode().Width / 2 - 400, sf::VideoMode::GetDesktopMode().Height / 2 - 300);
     app.SetFramerateLimit(60);
+
+    app.Clear();
+    sf::Text loading("Loading ...");
+    loading.SetCharacterSize(12);
+    loading.SetPosition(round(400 - loading.GetRect().Width / 2), round(300 - loading.GetRect().Height / 2));
+    app.Draw(loading);
+    app.Display();
+
     Input::GetInstance().SetDefaultWindow(app);
     Resources::GetInstance().LoadPath(QDir("../data"));
 
     /* ======== States ======== */
-    StateManager mgr;
-    mgr.AddState(new MenuState());
+    StateManager::GetInstance().AddState(new MenuState());
 
     /* ======== Debug Overlay ======== */
     Entity overlay("debug_overlay");
@@ -56,33 +63,6 @@ int main() {
     text.SetSize(8);
     overlay.AddChild(&text);
 
-    /* ======== GUI ======== */
-    Panel gui("gui");
-    gui.Position = Vector2D(290, 200);
-    gui.Size = Vector2D(220, 200);
-    gui.SetCaption("Test Panel");
-
-    Button* b;
-    b = new Button("button1", "Campaign");
-    b->Position.x = 10;
-    b->Position.y = 10;
-    b->Size.x = 200;
-    b->Size.y = 30;
-    gui.AddChild(b);
-    b = new Button("button2", "Options");
-    b->Position.x = 10;
-    b->Position.y = 50;
-    b->Size.x = 200;
-    b->Size.y = 30;
-    gui.AddChild(b);
-    b = new Button("button3", "Quit");
-    b->Position.x = 10;
-    b->Position.y = 90;
-    b->Size.x = 200;
-    b->Size.y = 30;
-    b->ClickEvent = new Callback<sf::Mouse::Button>(&CloseButtonClick);
-    gui.AddChild(b);
-
     /* for(int i = 0; i < 4; ++i) {
         for(int j = 0; j < 4; ++j) {
             b = new Button("button-" + Resources::GetInstance().GetNextID(), "X");
@@ -100,7 +80,11 @@ int main() {
 
     /* ======== Main Loop ======== */
     while(app.IsOpened()) {
-        mgr.PushStates();
+        StateManager::GetInstance().PushStates();
+        if(StateManager::GetInstance().GetCurrentState() == nullptr) {
+            app.Close();
+            break;
+        }
 
         float time_diff = clock.GetElapsedTime() * 0.001;
         time += time_diff;
@@ -117,8 +101,6 @@ int main() {
             } else if(e.Type == sf::Event::KeyPressed) {
                 if(e.Key.Code == sf::Keyboard::F12) {
                     app.Capture().SaveToFile("screenshot.png");
-                } else if(e.Key.Code == sf::Keyboard::Space) {
-                    mgr.AddState(new EditorState(), 0);
                 } else if(e.Key.Code == sf::Keyboard::Q) {
                     if(e.Key.Control) {
                         // Ctrl + Q
@@ -136,22 +118,18 @@ int main() {
                     FocusManager::GetInstance().ShiftFocusDown();
                 }
             }
-            if(gui.HandleEvent(e)) {
-                // only handle the event if the GUI did not already
-                mgr.HandleEvent(e);
-            }
+
+            StateManager::GetInstance().HandleEvent(e);
         }
 
         // UPDATE
-        mgr.Update(time_diff);
+        StateManager::GetInstance().Update(time_diff);
         overlay.Update(time_diff);
-        gui.Update(time_diff);
 
         // DRAW
         app.Clear(sf::Color(0, 0, 0));
-        mgr.Draw(app);
+        StateManager::GetInstance().Draw(app);
         overlay.Draw(app);
-        gui.Draw(app);
         app.Display();
 
     }

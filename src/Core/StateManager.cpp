@@ -2,11 +2,17 @@
 
 StateManager::StateManager() {
     mNextState = nullptr;
+    mRenderTexture.Create(800, 600);
 }
 
 StateManager::~StateManager() {
     // pop all states
     PopState(mStates.size());
+}
+
+StateManager& StateManager::GetInstance() {
+    static StateManager instance;
+    return instance;
 }
 
 void StateManager::AddState(State* state, float transition) {
@@ -30,6 +36,9 @@ void StateManager::PopState(int count) {
             mStates.pop_back();
         }
     }
+    if(count > 0) {
+        mStates.back()->Activate();
+    }
 }
 
 void StateManager::PushStates() {
@@ -40,6 +49,7 @@ void StateManager::PushStates() {
 
         mStates.push_back(mNextState);
         mNextState->Activate();
+        mNextState->StartTransitionIn(1.f);
         mNextState = nullptr;
     }
 }
@@ -55,6 +65,10 @@ void StateManager::Update(float time_diff) {
     for(std::vector<State*>::iterator iter = mStates.begin(); iter != mStates.end(); ++iter) {
         mStates.back()->Update(time_diff);
     }
+
+    while(GetCurrentState()->GetTransitionState().State == TransitionState::AFTER) {
+        PopState(1);
+    }
 }
 
 void StateManager::Draw(sf::RenderTarget& target) {
@@ -62,7 +76,19 @@ void StateManager::Draw(sf::RenderTarget& target) {
     for(std::vector<State*>::iterator iter = mStates.begin(); iter != mStates.end(); ++iter) {
         // only draw if state above is transitioning or current state is topmost state
         if(iter == mStates.end() - 1 || (*(iter + 1))->GetTransitionState().IsTransitioning()) {
-            (*iter)->Draw(target);
+            TransitionState ts = (*iter)->GetTransitionState();
+            if(ts.IsTransitioning()) {
+                mRenderTexture.Clear(sf::Color(0,0,0,0));
+                (*iter)->Draw(mRenderTexture);
+                mRenderTexture.Display();
+                sf::Sprite sprite(mRenderTexture.GetTexture());
+                float c = ts.GetProgress();
+                if(ts.State == TransitionState::OUT) c = 1 - c;
+                sprite.SetColor(sf::Color(255, 255, 255, 255 * c));
+                target.Draw(sprite);
+            } else {
+                (*iter)->Draw(target);
+            }
         }
     }
 }

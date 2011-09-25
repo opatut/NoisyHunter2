@@ -34,3 +34,11 @@ void EditorState::OnDraw(sf::RenderTarget& target) {
         mGuiPanel.Draw(target);
     }
 }
+
+void EditorState::OnHandleEvent(sf::Event& event) {
+    if(event.Type == sf::Event::KeyPressed) {
+        if(event.Key.Code == sf::Keyboard::Escape) {
+            StartTransitionOut(1.f);
+        }
+    }
+}

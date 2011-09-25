@@ -16,16 +16,17 @@ Submarine::Submarine(QString name)
 void Submarine::OnUpdate(float time_diff) {
     int rot_inv = (Speed.x < 0 ? -1 : 1);
     if(sf::Keyboard::IsKeyPressed(sf::Keyboard::W)) {
-        mTargetAngle -= time_diff * 1 * rot_inv;
-    }
-    if(sf::Keyboard::IsKeyPressed(sf::Keyboard::S)) {
-        mTargetAngle += time_diff * 1 * rot_inv;
+        mTargetAngle -= time_diff * 0.8 * rot_inv;
+    } else if(sf::Keyboard::IsKeyPressed(sf::Keyboard::S)) {
+        mTargetAngle += time_diff * 0.8 * rot_inv;
+    } else {
+        mTargetAngle *= (1 - 0.8 * time_diff);
     }
     if(sf::Keyboard::IsKeyPressed(sf::Keyboard::D)) {
-        Accelerate(Vector2D(1, 0));
+        Accelerate(Vector2D(40 * time_diff, 0));
     }
     if(sf::Keyboard::IsKeyPressed(sf::Keyboard::A)) {
-        Accelerate(Vector2D(-1, 0));
+        Accelerate(Vector2D(-40 * time_diff, 0));
     }
 
     /* if((rot_inv == -1 && Speed.x > 0) || (rot_inv == 1 && Speed.x < 0)) {
@@ -42,7 +43,7 @@ void Submarine::OnUpdate(float time_diff) {
 
     mSprite.FlipX(Speed.x < 0);
 
-    Speed *= (1.f - 0.5 * time_diff);
+    Speed *= (1.f - 0.4 * time_diff);
 
     mSprite.SetPosition(GetAbsolutePosition().x, GetAbsolutePosition().y);
     mSprite.SetRotation(Vector2D::rad2Deg(GetAbsoluteRotation()));

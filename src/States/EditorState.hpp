@@ -12,7 +12,7 @@ public:
 
     virtual void OnUpdate(float time_diff);
     virtual void OnDraw(sf::RenderTarget& target);
-    // virtual void OnHandleEvent(sf::Event& event);
+    virtual void OnHandleEvent(sf::Event& event);
 
 private:
     Entity mScene;
