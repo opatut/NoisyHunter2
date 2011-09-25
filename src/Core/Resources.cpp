@@ -39,6 +39,13 @@ const sf::Texture& Resources::GetTexture(QString filename) {
     return mTextures[filename];
 }
 
+void Resources::SetTextureSmooth(QString name, bool smooth) {
+    if(mTextures.contains(name)) {
+        mTextures[name].SetSmooth(smooth);
+    }
+
+}
+
 const sf::Font& Resources::GetDefaultFont() {
     if(mDefaultFont == "") {
         return sf::Font::GetDefaultFont();

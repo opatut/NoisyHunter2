@@ -1,7 +1,7 @@
 #include "Submarine.hpp"
 
 #include "Core/Resources.hpp"
-
+#include "ParticleSystem.hpp"
 #include <iostream>
 
 Submarine::Submarine(QString name)
@@ -11,6 +11,12 @@ Submarine::Submarine(QString name)
     Position = Vector2D(400, 300);
     mTargetAngle = 0;
     Scale(0.3);
+
+    // add particle system at rear
+    ParticleSystem* system = new ParticleSystem("rear-bubbles", Vector2D(-50, 0), 2.f, 10.f);
+    system->GetParticleSprite().SetTexture(Resources::GetInstance().GetTexture("gfx/torpedo.png"));
+    system->GetParticleSprite().SetScale(0.1, 0.1);
+    AddChild(system);
 }
 
 void Submarine::OnUpdate(float time_diff) {

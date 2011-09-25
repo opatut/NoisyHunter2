@@ -1,7 +1,7 @@
 #include "Level.hpp"
 
+#include <iostream>
 #include "Core/Resources.hpp"
-
 #include "Entities/Rock.hpp"
 
 Level::Level(QString name)
@@ -10,20 +10,67 @@ Level::Level(QString name)
     mInfo = sf::Text("Level 01", Resources::GetInstance().GetDefaultFont());
     mInfo.SetPosition(10, 10);
     mInfo.SetCharacterSize(10);
+
+    Resources::GetInstance().SetTextureSmooth("gfx/tiles.png", false);
+    mSprite.SetTexture(Resources::GetInstance().GetTexture("gfx/tiles.png"));
+    mTextureTileSize = 64;
+    mTextureGridSize = 16;
+
+    SetTileSize(32.f);
+    SetGridSize(10, 10);
 }
 
 void Level::OnDraw(sf::RenderTarget& target) {
+    _RenderTiles(target);
     target.Draw(mInfo);
 }
 
 void Level::Generate() {
-    for(unsigned int i = 0; i < 100; ++i) {
-        for(unsigned int j = 0; j < 10; ++j) {
-            Rock* r = new Rock("rocks-" + QString::number(i) + "-" + QString::number(j), "01");
-            r->Position.x = i * 50;
-            r->Position.y = 400 + j * 40;
-            r->Rotation = i * 10000000.123 + j * 1001.5213 + i * j + sqrt(j) + 20 * sin(i);
-            AddChild(r);
+}
+
+void Level::SetGridSize(int columns, int rows) {
+    mGridColumns = columns;
+    mGridRows = rows;
+    mTiles.resize(columns);
+    for(int i = 0; i < columns; ++i) {
+        mTiles[i].resize(rows, -1);
+    }
+}
+
+void Level::SetTileSize(float tile_size) {
+    mTileSize = tile_size;
+}
+
+void Level::SetTile(int x, int y, int id) {
+    if(x >= 0 && x < mGridColumns && y >= 0 && y < mGridRows)
+        mTiles[x][y] = id;
+    else
+        std::cerr << "Cannot set tile " << x << " | " << y << " to " << id << ": position out of grid" << std::endl;
+}
+
+int Level::GetTile(int x, int y) {
+    return mTiles[x][y];
+}
+
+void Level::_RenderTiles(sf::RenderTarget& target) {
+    for(int x = 0; x < mGridColumns; ++x) {
+        for(int y = 0; y < mGridRows; ++y) {
+            _RenderTile(target, x, y, GetTile(x, y));
         }
     }
 }
+
+void Level::_RenderTile(sf::RenderTarget& target, int x, int y, int id) {
+    if(id == -1)
+        return;
+
+    int tx = id % mTextureGridSize;
+    int ty = id / mTextureGridSize;
+
+    mSprite.SetScale(mTileSize / mTextureTileSize, mTileSize / mTextureTileSize);
+    mSprite.SetPosition(GetAbsolutePosition().x + x * mTileSize, GetAbsolutePosition().y + y * mTileSize);
+    mSprite.SetSubRect(sf::IntRect(tx * mTextureTileSize, ty * mTextureTileSize, mTextureTileSize, mTextureTileSize));
+
+    target.Draw(mSprite);
+}
+

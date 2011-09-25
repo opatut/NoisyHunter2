@@ -21,7 +21,7 @@ GameState::GameState()
 
     // mScene.AddChild(new Level("level"));
 
-    Tile* t;
+    /*Tile* t;
     for(int i = 0; i < 3; ++i) {
         for(int j = 0; j < 3; ++j) {
             t = new Tile(i + j * 16);
@@ -29,14 +29,22 @@ GameState::GameState()
             t->Position.y = j * 32 + 100;
             mScene.AddChild(t);
         }
-    }
+    }*/
 
-    for(int i = 0; i < 800; i += 32) {
-        t = new Tile(1);
-        t->Position.x = i;
-        t->Position.y = 600 - 32;
-        mScene.AddChild(t);
-    }
+    Level* l = new Level("level");
+
+    l->SetTile(1, 1, 0);
+    l->SetTile(2, 1, 1);
+    l->SetTile(3, 1, 2);
+
+    l->SetTile(1, 2, 16);
+    l->SetTile(2, 2, 3);
+    l->SetTile(3, 2, 34);
+
+    l->SetTile(1, 3, 32);
+    l->SetTile(2, 3, 34);
+    mScene.AddChild(l);
+
 }
 
 GameState::~GameState() {
@@ -46,15 +54,19 @@ GameState::~GameState() {
 
 void GameState::OnUpdate(float time_diff) {
     if(IsActive()) {
-        mScene.Update(time_diff);
-/*
+
         // Vector2D v(mScene.Position + Vector2D(400, 300));
         Vector2D speed = mSubmarine->GetAbsoluteSpeed();
         speed.Rotate(mSubmarine->GetAbsoluteRotation());
         float x = 3.f; // move view to where we'll be in x seconds
-        Vector2D p = mSubmarine->Position + speed * x;
-        Vector2D diff = Vector2D(400,300) - p;
-        mScene.Move(Vector2D(time_diff * diff.x, time_diff * diff.y)); */
+        Vector2D target = Vector2D(400,300) - mSubmarine->Position - speed * x;
+
+        Vector2D diff = target - mScene.Position;
+        mScene.Move(diff * time_diff);
+
+        // mScene.Position = ;
+
+        mScene.Update(time_diff);
     }
 }
 

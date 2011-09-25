@@ -14,6 +14,7 @@ public:
     void LoadFile(QString path, QString name);
 
     const sf::Texture& GetTexture(QString filename);
+    void SetTextureSmooth(QString name, bool smooth);
     const sf::Font& GetDefaultFont();
     const sf::Font& GetFont(QString filename);
     void SetDefaultFont(QString name);
