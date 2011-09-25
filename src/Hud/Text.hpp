@@ -23,8 +23,13 @@ public:
     void SetSize(unsigned int points);
     void SetCaption(QString caption);
     void SetAlign(int align);
+
+    void SetAlignToPixel(bool align_to_pixel);
+    bool GetAlignToPixel();
+
 private:
     int mAlign;
+    bool mAlignToPixel;
     void _Refresh();
 
     sf::Text mText;

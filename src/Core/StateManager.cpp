@@ -1,5 +1,7 @@
 #include "StateManager.hpp"
 
+#include <iostream>
+
 StateManager::StateManager() {
     mNextState = nullptr;
     mRenderTexture.Create(800, 600);
@@ -44,7 +46,7 @@ void StateManager::PopState(int count) {
 void StateManager::PushStates() {
     if(mNextState != nullptr) {
         if(GetCurrentState() != nullptr) {
-            GetCurrentState()->Deactivate();
+            // GetCurrentState()->Deactivate();
         }
 
         mStates.push_back(mNextState);
@@ -64,6 +66,18 @@ void StateManager::Update(float time_diff) {
     // update in reverse order (in vector order)
     for(std::vector<State*>::iterator iter = mStates.begin(); iter != mStates.end(); ++iter) {
         mStates.back()->Update(time_diff);
+    }
+
+    if(GetCurrentState()->GetTransitionState().State == TransitionState::WHILE && mStates.size() >= 2) {
+        State* second_last = (*(mStates.end() - 2));
+        if(second_last->IsActive())
+            second_last->Deactivate();
+    }
+
+    if(GetCurrentState()->GetTransitionState().State == TransitionState::OUT && mStates.size() >= 2) {
+        State* second_last = (*(mStates.end() - 2));
+        if(!second_last->IsActive())
+            second_last->Activate();
     }
 
     while(GetCurrentState()->GetTransitionState().State == TransitionState::AFTER) {
@@ -87,6 +101,7 @@ void StateManager::Draw(sf::RenderTarget& target) {
                 sprite.SetColor(sf::Color(255, 255, 255, 255 * c));
                 target.Draw(sprite);
             } else {
+                // draw directly
                 (*iter)->Draw(target);
             }
         }

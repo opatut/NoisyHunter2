@@ -18,6 +18,9 @@ void EditorState::OnUpdate(float time_diff) {
 
 void EditorState::OnDraw(sf::RenderTarget& target) {
     if(IsActive()) {
+        mScene.Draw(target);
+        mGuiPanel.Draw(target);
+
         sf::Shape h = sf::Shape::Line(0,0,800,0,1.f,sf::Color(255,255,255,20));
         for(int i = 0; i < 600; i += 32) {
             h.SetPosition(0, i);
@@ -29,9 +32,6 @@ void EditorState::OnDraw(sf::RenderTarget& target) {
             v.SetPosition(i, 0);
             target.Draw(v);
         }
-
-        mScene.Draw(target);
-        mGuiPanel.Draw(target);
     }
 }
 

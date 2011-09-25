@@ -8,11 +8,16 @@ Text::Text(QString name, QString caption)
     SetCaption(caption);
     SetSize(12);
     SetAlign(TA_CENTER);
+    mAlignToPixel = true;
 }
 
 void Text::OnUpdate(float time_diff) {
     mText.SetScale(Size.x, Size.y);
-    mText.SetPosition(round(GetAbsolutePosition().x), round(GetAbsolutePosition().y));
+    if(mAlignToPixel) {
+        mText.SetPosition(round(GetAbsolutePosition().x), round(GetAbsolutePosition().y));
+    } else {
+        mText.SetPosition(GetAbsolutePosition().x, GetAbsolutePosition().y);
+    }
     mText.SetRotation(Vector2D::rad2Deg(Rotation));
 }
 
@@ -33,6 +38,14 @@ void Text::SetCaption(QString caption) {
 void Text::SetAlign(int align) {
     mAlign = align;
     _Refresh();
+}
+
+void Text::SetAlignToPixel(bool align_to_pixel) {
+    mAlignToPixel = align_to_pixel;
+}
+
+bool Text::GetAlignToPixel() {
+    return mAlignToPixel;
 }
 
 void Text::_Refresh() {

@@ -56,7 +56,7 @@ int main() {
     fps.SetSize(8);
     overlay.AddChild(&fps);
 
-    Text text("text", "Noisy Hunter - Build 3");
+    Text text("text", "Noisy Hunter - Build 20110925");
     text.Position.x = 795;
     text.Position.y = 595;
     text.SetAlign(Text::TA_RIGHT | Text::TA_BOTTOM);

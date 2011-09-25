@@ -5,8 +5,11 @@
 
 class Panel : public Widget {
 public:
-    Panel(QString name);
+    Panel(QString name, sf::Color background = sf::Color(60, 60, 60, 230));
     virtual void Render();
+
+private:
+    sf::Color mBackground;
 };
 
 #endif

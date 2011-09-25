@@ -1,9 +1,10 @@
 #include "Panel.hpp"
 
-Panel::Panel(QString name)
-    : Widget(name) {}
+Panel::Panel(QString name, sf::Color background)
+    : Widget(name),
+      mBackground(background) {}
 
 void Panel::Render() {
-    mRenderTexture.Clear(sf::Color(120, 120, 120, 230));
+    mRenderTexture.Clear(mBackground);
 }
 

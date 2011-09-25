@@ -6,26 +6,27 @@
 #include "Gui/Button.hpp"
 #include "States/GameState.hpp"
 #include "States/EditorState.hpp"
-#include "Hud/Text.hpp"
 
 MenuState::MenuState()
     : mScene("scene"),
-      mGui("gui") {
+      mGui("gui", sf::Color(255,255,255,0)) {
     mScene.AddChild(new Narwhal("narwhal" + Resources::GetInstance().GetNextID()));
 
-    Text* t = new Text("menu-headline", "Noisy Hunter");
-    t->Position.x = 400;
-    t->Position.y = 100;
-    t->SetSize(28);
-    t->SetAlign(Text::TA_TOP);
-    mScene.AddChild(t);
+    mHeadline2 = new Text("menu-headline", "Noisy Hunter");
+    mHeadline2->Position.x = 400;
+    mHeadline2->Position.y = 100;
+    mHeadline2->SetSize(28);
+    mHeadline2->SetAlign(Text::TA_TOP);
+    mHeadline2->SetAlignToPixel(false);
+    mScene.AddChild(mHeadline2);
 
-    t = new Text("menu-headline2", "Welcome to");
-    t->Position.x = 400;
-    t->Position.y = 80;
-    t->SetSize(14);
-    t->SetAlign(Text::TA_TOP);
-    mScene.AddChild(t);
+    mHeadline1 = new Text("menu-headline2", "Welcome to");
+    mHeadline1->Position.x = 400;
+    mHeadline1->Position.y = 80;
+    mHeadline1->SetSize(14);
+    mHeadline1->SetAlign(Text::TA_TOP);
+    mHeadline1->SetAlignToPixel(false);
+    mScene.AddChild(mHeadline1);
 
     /* ======== GUI ======== */
     mGui.Position = Vector2D(290, 215);
@@ -66,6 +67,13 @@ MenuState::~MenuState() {
 
 void MenuState::OnUpdate(float time_diff) {
     if(IsActive()) {
+        mLifetime += time_diff;
+
+        if(mLifetime < 2.5 * PI) {
+            mHeadline2->Position.x = sin(mLifetime * 0.2) * 50 + 350;
+            mHeadline1->Position.x = -sin(mLifetime * 0.2) * 50 + 450;
+        }
+
         mScene.Update(time_diff);
         mGui.Update(time_diff);
     }

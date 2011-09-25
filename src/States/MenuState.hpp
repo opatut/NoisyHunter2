@@ -4,6 +4,7 @@
 #include "Core/State.hpp"
 #include "Core/Entity.hpp"
 #include "Gui/Panel.hpp"
+#include "Hud/Text.hpp"
 
 class MenuState : public State {
 public:
@@ -19,6 +20,8 @@ public:
     void CloseButtonClick(sf::Mouse::Button button);
 
 private:
+    Text* mHeadline1, *mHeadline2;
+    float mLifetime;
     Entity mScene;
     Panel mGui;
 
