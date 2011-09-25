@@ -15,7 +15,7 @@ public:
         TA_BOTTOM = 0x1000
     };
 
-    Text(QString name, QString caption);
+    Text(QString name, QString caption, Vector2D position = Vector2D(), unsigned int size = 12, int align = TA_CENTER);
 
     virtual void OnUpdate(float time_diff);
     virtual void OnDraw(sf::RenderTarget& target);

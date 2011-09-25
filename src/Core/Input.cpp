@@ -5,8 +5,12 @@ Input& Input::GetInstance() {
     return instance;
 }
 
-void Input::SetDefaultWindow(sf::Window& window) {
+void Input::SetDefaultWindow(sf::RenderWindow& window) {
     mDefaultWindow = &window;
+}
+
+sf::RenderWindow& Input::GetDefaultWindow() {
+    return *mDefaultWindow;
 }
 
 Vector2D Input::GetMousePosition() {

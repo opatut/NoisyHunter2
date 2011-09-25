@@ -7,7 +7,7 @@
 
 class Entity {
 public:
-    Entity(QString name);
+    Entity(QString name, Vector2D position = Vector2D(), Vector2D size = Vector2D(1,1), Vector2D speed = Vector2D(), float rotation = 0.f);
     ~Entity();
     QString GetName();
 

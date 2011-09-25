@@ -14,7 +14,7 @@ Tile::Tile(int id)
 
 
 void Tile::OnUpdate(float time_diff) {
-    mSprite.SetPosition(Position.x, Position.y);
+    mSprite.SetPosition(GetAbsolutePosition().x, GetAbsolutePosition().y);
 }
 
 void Tile::OnDraw(sf::RenderTarget& target) {

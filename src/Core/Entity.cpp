@@ -1,11 +1,12 @@
 #include "Entity.hpp"
 #include <iostream>
 
-Entity::Entity(QString name) {
+Entity::Entity(QString name, Vector2D position, Vector2D size, Vector2D speed, float rotation) {
     mName = name;
-    Position = Vector2D(0, 0);
-    Size = Vector2D(1, 1);
-    Rotation = 0.f;
+    Position = position;
+    Size = size;
+    Speed = speed;
+    Rotation = rotation;
     mParent = nullptr;
 }
 

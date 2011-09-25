@@ -48,20 +48,9 @@ int main() {
 
     /* ======== Debug Overlay ======== */
     Entity overlay("debug_overlay");
-
-    Text fps("fps", "?? FPS");
-    fps.Position.x = 795;
-    fps.Position.y = 580;
-    fps.SetAlign(Text::TA_RIGHT | Text::TA_BOTTOM);
-    fps.SetSize(8);
+    Text fps("fps", "?? FPS", Vector2D(795,580), 8, Text::TA_RIGHT | Text::TA_BOTTOM);
     overlay.AddChild(&fps);
-
-    Text text("text", "Noisy Hunter - Build 20110925");
-    text.Position.x = 795;
-    text.Position.y = 595;
-    text.SetAlign(Text::TA_RIGHT | Text::TA_BOTTOM);
-    text.SetSize(8);
-    overlay.AddChild(&text);
+    overlay.AddChild(new Text("info", "Noisy Hunter // Build 2011-09-25", Vector2D(795, 595), 8, Text::TA_RIGHT | Text::TA_BOTTOM));
 
     /* for(int i = 0; i < 4; ++i) {
         for(int j = 0; j < 4; ++j) {

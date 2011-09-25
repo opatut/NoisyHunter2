@@ -2,12 +2,12 @@
 
 #include "Core/Resources.hpp"
 
-Text::Text(QString name, QString caption)
-    : Entity(name) {
+Text::Text(QString name, QString caption, Vector2D position, unsigned int size, int align)
+    : Entity(name, position) {
     mText.SetFont(Resources::GetInstance().GetDefaultFont());
     SetCaption(caption);
-    SetSize(12);
-    SetAlign(TA_CENTER);
+    SetSize(size);
+    SetAlign(align);
     mAlignToPixel = true;
 }
 

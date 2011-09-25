@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "Core/Resources.hpp"
+#include "Core/Input.hpp"
 #include "Hud/Text.hpp"
 #include "Entities/Level.hpp"
 #include "Entities/Narwhal.hpp"
@@ -53,6 +54,14 @@ GameState::~GameState() {
 void GameState::OnUpdate(float time_diff) {
     if(IsActive()) {
         mScene.Update(time_diff);
+/*
+        // Vector2D v(mScene.Position + Vector2D(400, 300));
+        Vector2D speed = mSubmarine->GetAbsoluteSpeed();
+        speed.Rotate(mSubmarine->GetAbsoluteRotation());
+        float x = 3.f; // move view to where we'll be in x seconds
+        Vector2D p = mSubmarine->Position + speed * x;
+        Vector2D diff = Vector2D(400,300) - p;
+        mScene.Move(Vector2D(time_diff * diff.x, time_diff * diff.y)); */
     }
 }
 

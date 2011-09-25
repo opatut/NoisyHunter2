@@ -7,12 +7,13 @@
 class Input {
 public:
     static Input& GetInstance();
-    void SetDefaultWindow(sf::Window& window);
+    void SetDefaultWindow(sf::RenderWindow& window);
+    sf::RenderWindow& GetDefaultWindow();
 
     Vector2D GetMousePosition();
 
 private:
-    sf::Window* mDefaultWindow;
+    sf::RenderWindow* mDefaultWindow;
 };
 
 #endif
