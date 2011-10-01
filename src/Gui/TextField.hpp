@@ -7,7 +7,7 @@
 class TextField : public Widget {
 public:
     TextField(QString name);
-    virtual void Render();
+    virtual void Render(sf::RenderTarget& target);
     virtual bool OnKeyDown(sf::Keyboard::Key key);
     virtual bool OnTextEntered(uint32_t unicode);
     virtual bool OnChangeFocus(bool focus);

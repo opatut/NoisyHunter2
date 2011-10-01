@@ -11,15 +11,15 @@ void Panel::SetBorder(float size, sf::Color color) {
     mBorderColor = color;
 }
 
-void Panel::Render() {
-    mRenderTexture.Clear(mBackground);
-    if(mBorderSize > 0) {
-        sf::Shape s = sf::Shape::Rectangle(
-                    mBorderSize, mBorderSize,
-                    mRenderTexture.GetWidth() - 2 * mBorderSize,
-                    mRenderTexture.GetHeight() - 2 * mBorderSize,
-                    sf::Color(0,0,0,0), mBorderSize, mBorderColor);
-        mRenderTexture.Draw(s);
-    }
+void Panel::Render(sf::RenderTarget& target) {
+    sf::Shape s = sf::Shape::Rectangle(
+        mBorderSize, mBorderSize,
+        Size.x - 2 * mBorderSize,
+        Size.y - 2 * mBorderSize,
+        mBackground, mBorderSize, mBorderColor);
+    target.Draw(s);
 }
 
+void Panel::SetBackground(sf::Color background) {
+    mBackground = background;
+}

@@ -2,7 +2,9 @@
 
 #include "Core/Resources.hpp"
 #include "Core/Input.hpp"
-#include "ParticleSystem.hpp"
+#include "Particles/ScaleAffector.hpp"
+#include "Particles/ColorFadeAffector.hpp"
+#include "Particles/LinearForceAffector.hpp"
 #include <iostream>
 
 Submarine::Submarine(QString name)
@@ -14,13 +16,20 @@ Submarine::Submarine(QString name)
     Scale(0.3);
 
     // add particle system at rear
-    ParticleSystem* system = new ParticleSystem("rear-bubbles", Vector2D(-50, 0), 2.f, 10.f);
-    system->GetParticleSprite().SetTexture(Resources::GetInstance().GetTexture("gfx/torpedo.png"));
-    system->GetParticleSprite().SetScale(0.1, 0.1);
-    AddChild(system);
+    mBubbles = new ParticleSystem("rear-bubbles", Vector2D(-50, 0), 20.f, 10.f);
+    mBubbles->GetParticleSprite().SetTexture(Resources::GetInstance().GetTexture("gfx/bubbles-01.png"));
+    mBubbles->AddAffector(new ScaleAffector(0.1, 2.f));
+    mBubbles->AddAffector(new ColorFadeAffector(sf::Color(255, 255, 255, 100), sf::Color(200, 200, 255, 0)));
+    mBubbles->AddAffector(new LinearForceAffector(Vector2D(0, -5.f)));
+    mBubbles->InitialParticleAngle.Set(Vector2D::deg2Rad(-180), Vector2D::deg2Rad(180));
+    mBubbles->InitialParticleSpeed.Set(0, 5);
+    mBubbles->SetRate(0.f);
+    AddChild(mBubbles);
 }
 
 void Submarine::OnUpdate(float time_diff) {
+    mBubbles->SetRate(abs(Speed.x) * 0.1);
+
     int rot_inv = (Speed.x < 0 ? -1 : 1);
     if(sf::Keyboard::IsKeyPressed(sf::Keyboard::W)) {
         mTargetAngle -= time_diff * 0.8 * rot_inv;

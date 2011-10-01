@@ -18,7 +18,7 @@ public:
     Widget(QString name);
     ~Widget();
 
-    virtual void Render() = 0;
+    virtual void Render(sf::RenderTarget& target) = 0;
 
     void OnUpdate(float time_diff);
     void OnDraw(sf::RenderTarget& target);
@@ -67,10 +67,10 @@ protected:
     bool _IsPointInside(float x, float y);
     bool _IsMouseInside();
 
-    sf::RenderTexture mRenderTexture;
     QString mCaption;
 
 private:
+    sf::RenderTexture mRenderTexture;
     void _AdjustWidgetState(); // checks if there is a hover / focus / active state and adjusts mState
     int mState;
 

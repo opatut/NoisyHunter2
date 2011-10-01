@@ -33,10 +33,16 @@ void Widget::OnDraw(sf::RenderTarget& target) {
     if(IsVisible()) {
         _AdjustWidgetState();
 
-        sf::Sprite sprite;
+        /*sf::Sprite sprite;
         sprite.SetTexture(mRenderTexture.GetTexture(), true);
         sprite.SetPosition(GetAbsolutePosition().x, GetAbsolutePosition().y);
-        target.Draw(sprite);
+        target.Draw(sprite);*/
+        sf::View before = target.GetView();
+        sf::View after = before;
+        after.Move(-GetAbsolutePosition().x, -GetAbsolutePosition().y);
+        target.SetView(after);
+        Render(target);
+        target.SetView(before);
     }
 }
 
@@ -150,12 +156,12 @@ void Widget::Hide() {
 }
 
 void Widget::_Refresh() {
-    if(Size.x != mRenderTexture.GetWidth() || Size.y != mRenderTexture.GetHeight()) {
+    /*if(Size.x != mRenderTexture.GetWidth() || Size.y != mRenderTexture.GetHeight()) {
         mRenderTexture.Create(Size.x, Size.y);
     }
     mRenderTexture.Clear(sf::Color(0,0,0,0)); // remove everything
-    Render();
-    mRenderTexture.Display();
+    Render(mRenderTexture);
+    mRenderTexture.Display();*/
 }
 
 bool Widget::_IsPointInside(Vector2D p) {

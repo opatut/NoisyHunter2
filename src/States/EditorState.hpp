@@ -14,6 +14,8 @@ public:
     virtual void OnDraw(sf::RenderTarget& target);
     virtual void OnHandleEvent(sf::Event& event);
 
+    void ButtonSelectTile(void* sender, sf::Mouse::Button button);
+
 private:
     Entity mScene;
     Panel mGuiPanel;

@@ -8,7 +8,7 @@
 Button::Button(QString name, QString caption)
     : Widget(name) {
     // use name as caption if no caption given (for debug)
-    SetCaption(caption != "" ? caption : name);
+    SetCaption(caption);
 
     mText.SetFont(Resources::GetInstance().GetDefaultFont());
     mText.SetCharacterSize(16);
@@ -16,19 +16,19 @@ Button::Button(QString name, QString caption)
     mBackground.SetTexture(Resources::GetInstance().GetTexture("gfx/gui.png"));
 }
 
-void Button::Render() {
+void Button::Render(sf::RenderTarget& target) {
     // draw the shape
     //sf::Shape shape = sf::Shape::Rectangle(1, 1, Size.x - 2, Size.y - 2, sf::Color(255, 255, 255, (HasFocus() ? 100 : 50)), 2.f, sf::Color::White);
     // mRenderTexture.Draw(shape);
     mBackground.SetPosition(0, 0);
     mBackground.SetScale(Size.x, Size.y);
     mBackground.SetSubRect(sf::IntRect(0, (HasFocus() ? 40 : 0), 200, 40));
-    mRenderTexture.Draw(mBackground);
+    target.Draw(mBackground);
 
     // draw the text
     mText.SetColor(sf::Color::White);
     mText.SetPosition(round(Size.x / 2 - mText.GetRect().Width / 2), round(Size.y / 2 - mText.GetRect().Height / 2));
-    mRenderTexture.Draw(mText);
+    target.Draw(mText);
 }
 
 bool Button::OnClick(sf::Mouse::Button button) {

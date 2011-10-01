@@ -96,6 +96,8 @@ void MenuState::OnHandleEvent(sf::Event& event) {
     if(event.Type == sf::Event::KeyPressed) {
         if(event.Key.Code == sf::Keyboard::Escape) {
             StartTransitionOut(1.0);
+        } else if(event.Key.Code == sf::Keyboard::E) {
+            StateManager::GetInstance().AddState(new EditorState());
         }
     }
 }
