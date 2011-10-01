@@ -49,9 +49,9 @@ void StateManager::PushStates() {
             // GetCurrentState()->Deactivate();
         }
 
-        mStates.push_back(mNextState);
         mNextState->Activate();
-        mNextState->StartTransitionIn(1.f);
+        mNextState->StartTransitionIn(0.2f);
+        mStates.push_back(mNextState);
         mNextState = nullptr;
     }
 }
@@ -69,7 +69,7 @@ void StateManager::Update(float time_diff) {
 
     // update in reverse order (in vector order)
     for(std::vector<State*>::iterator iter = mStates.begin(); iter != mStates.end(); ++iter) {
-        mStates.back()->Update(time_diff);
+        (*iter)->Update(time_diff);
     }
 
     if(GetCurrentState()->GetTransitionState().State == TransitionState::WHILE && mStates.size() >= 2) {
@@ -98,7 +98,7 @@ void StateManager::Draw(sf::RenderTarget& target) {
             if(ts.IsTransitioning()) {
                 if(mRenderTexture.GetHeight() == 0)
                     mRenderTexture.Create(Input::GetInstance().GetDefaultWindow().GetWidth(), Input::GetInstance().GetDefaultWindow().GetHeight());
-                mRenderTexture.Clear(sf::Color(0,0,0,0));
+                mRenderTexture.Clear(sf::Color(0,0,0));
                 (*iter)->Draw(mRenderTexture);
                 mRenderTexture.Display();
                 sf::Sprite sprite(mRenderTexture.GetTexture());

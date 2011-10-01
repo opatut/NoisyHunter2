@@ -80,7 +80,7 @@ void GameState::OnHandleEvent(sf::Event& event) {
                                         mSubmarine->Rotation + (mSubmarine->Speed.x < 0 ? PI : 0)));
         } else if(event.Type == sf::Event::KeyPressed) {
             if(event.Key.Code == sf::Keyboard::Escape) {
-                StartTransitionOut(1.f);
+                StartTransitionOut(0.2f);
             }
         }
     }

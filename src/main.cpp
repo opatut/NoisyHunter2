@@ -5,6 +5,7 @@
 
 #include "Core/Entity.hpp"
 #include "Core/Input.hpp"
+#include "Core/Random.hpp"
 #include "Core/Resources.hpp"
 #include "Core/StateManager.hpp"
 #include "Entities/Level.hpp"
@@ -20,6 +21,7 @@
 #include "Hud/Text.hpp"
 #include "States/EditorState.hpp"
 #include "States/GameState.hpp"
+#include "States/LoadingState.hpp"
 #include "States/MenuState.hpp"
 
 void do_console_command(void* sender, QString cmd) {
@@ -27,26 +29,36 @@ void do_console_command(void* sender, QString cmd) {
     ((TextField*)sender)->SetCaption("");
 }
 
+void load() {
+    Resources::GetInstance().LoadQueue();
+    Resources::GetInstance().SetDefaultFont("fonts/nouveau_ibm.ttf");
+}
+
 int main() {
+    Random::Initialize();
+
     /* ======== Setup ======== */
     sf::RenderWindow app(sf::VideoMode::GetDesktopMode(), "NoisyHunter", sf::Style::Fullscreen);
-    // sf::RenderWindow app(sf::VideoMode(1024, 768, 32), "NoisyHunter");
+    // sf::RenderWindow app(sf::VideoMode(800, 600, 32), "NoisyHunter");
     // app.SetPosition(sf::VideoMode::GetDesktopMode().Width / 2 - app.GetWidth() / 2, sf::VideoMode::GetDesktopMode().Height / 2 - app.GetHeight() / 2);
+    Input::GetInstance().SetDefaultWindow(app);
     app.SetFramerateLimit(60);
 
-    app.Clear();
-    sf::Text loading("Loading ...");
-    loading.SetCharacterSize(12);
-    loading.SetPosition(round(app.GetWidth() / 2 - loading.GetRect().Width / 2), round(app.GetHeight() / 2- loading.GetRect().Height / 2));
-    app.Draw(loading);
-    app.Display();
+    sf::Sprite logo;
+    sf::Texture logo_texture;
+    logo_texture.LoadFromFile("../data/logo.png");
+    logo.SetTexture(logo_texture);
+    logo.SetOrigin(logo_texture.GetWidth() / 2, logo_texture.GetHeight() / 2);
+    logo.SetPosition(app.GetWidth() / 2, app.GetHeight() / 2);
 
-    Input::GetInstance().SetDefaultWindow(app);
-    Resources::GetInstance().LoadPath(QDir("../data"));
-    Resources::GetInstance().SetDefaultFont("fonts/nouveau_ibm.ttf");
+    Resources::GetInstance().ReadPath(QDir("../data"));
+    std::cout << "Queued a total of " << Resources::GetInstance().GetQueueSize() << " files." << std::endl;
+
+    sf::Thread thread(&load);
+    thread.Launch();
 
     /* ======== States ======== */
-    StateManager::GetInstance().AddState(new MenuState());
+    StateManager::GetInstance().AddState(new LoadingState());
 
     /* ======== Debug Overlay ======== */
     Entity overlay("debug_overlay");
@@ -134,7 +146,9 @@ int main() {
         app.Clear(sf::Color(0, 0, 0));
         StateManager::GetInstance().Draw(app);
         console.Draw(app);
-        overlay.Draw(app);
+        if(sf::Keyboard::IsKeyPressed(sf::Keyboard::F3)) {
+            overlay.Draw(app);
+        }
         app.Display();
 
     }

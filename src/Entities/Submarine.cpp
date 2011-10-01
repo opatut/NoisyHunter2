@@ -16,7 +16,7 @@ Submarine::Submarine(QString name)
     Scale(0.3);
 
     // add particle system at rear
-    mBubbles = new ParticleSystem("rear-bubbles", Vector2D(-50, 0), 20.f, 10.f);
+    mBubbles = new ParticleSystem("rear-bubbles", Vector2D(), 20.f, 10.f);
     mBubbles->GetParticleSprite().SetTexture(Resources::GetInstance().GetTexture("gfx/bubbles-01.png"));
     mBubbles->AddAffector(new ScaleAffector(0.1, 2.f));
     mBubbles->AddAffector(new ColorFadeAffector(sf::Color(255, 255, 255, 100), sf::Color(200, 200, 255, 0)));

@@ -11,6 +11,7 @@ public:
     virtual void OnDraw(sf::RenderTarget& target);
 
 private:
+    void _PlaceRandom();
     sf::Sprite mSprite;
 };
 

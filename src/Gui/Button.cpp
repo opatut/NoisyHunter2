@@ -31,6 +31,14 @@ void Button::Render(sf::RenderTarget& target) {
     target.Draw(mText);
 }
 
+bool Button::OnKeyDown(sf::Keyboard::Key key) {
+    if(HasFocus() && key == sf::Keyboard::Return) {
+        EventClick->Call(this, sf::Mouse::Left);
+        return OnClick(sf::Mouse::Left);
+    }
+    return true;
+}
+
 bool Button::OnClick(sf::Mouse::Button button) {
     return false;
 }

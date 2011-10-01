@@ -55,7 +55,7 @@ void EditorState::OnDraw(sf::RenderTarget& target) {
 void EditorState::OnHandleEvent(sf::Event& event) {
     if(event.Type == sf::Event::KeyPressed) {
         if(event.Key.Code == sf::Keyboard::Escape) {
-            StartTransitionOut(1.f);
+            StartTransitionOut(0.2f);
         }
     }
 }

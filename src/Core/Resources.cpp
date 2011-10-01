@@ -11,16 +11,36 @@ Resources& Resources::GetInstance() {
     return instance;
 }
 
-void Resources::LoadPath(QDir path, QString prefix) {
+void Resources::ReadPath(QDir path, QString prefix, bool direct_load) {
     QFileInfoList list = path.entryInfoList();
     for(QFileInfoList::iterator info = list.begin(); info != list.end(); ++info) {
         QFileInfo i = *info;
         if(i.isDir() && i.fileName() != "." && i.fileName() != "..")  {
-            LoadPath(i.absoluteFilePath(), prefix + i.fileName() + "/");
+            ReadPath(i.absoluteFilePath(), prefix + i.fileName() + "/", direct_load);
         } else if(i.isFile()) {
-            LoadFile(i.absoluteFilePath(), prefix + i.fileName());
+            if(direct_load)
+                LoadFile(i.absoluteFilePath(), prefix + i.fileName());
+            else
+                mQueue.insert(i.absoluteFilePath(), prefix + i.fileName());
         }
     }
+}
+
+void Resources::LoadQueue() {
+    mQueueItem = 0;
+    for(QMap<QString,QString>::iterator iter = mQueue.begin(); iter != mQueue.end(); ++iter) {
+        LoadFile(iter.key(), iter.value());
+        ++mQueueItem;
+        sf::Sleep(50);
+    }
+}
+
+int Resources::GetQueueItem() {
+    return mQueueItem;
+}
+
+int Resources::GetQueueSize() {
+    return mQueue.size();
 }
 
 void Resources::LoadFile(QString path, QString name) {

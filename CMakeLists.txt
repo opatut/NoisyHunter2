@@ -11,6 +11,7 @@ find_package(Qt4 REQUIRED)
 find_package(Bullet REQUIRED)
 
 add_definitions("-Wall -Wextra -Werror -Wno-unused-parameter -Wno-unused-but-set-parameter -g -pedantic -fPIC -std=c++0x")
+add_definitions("-DDEBUG")
 add_definitions(${QT_DEFINITIONS})
 include(${QT_USE_FILE})
 

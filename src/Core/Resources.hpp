@@ -10,7 +10,8 @@ class Resources {
 public:
     static Resources& GetInstance();
 
-    void LoadPath(QDir path, QString prefix = "");
+    void ReadPath(QDir path, QString prefix = "", bool direct_load = false);
+    void LoadQueue();
     void LoadFile(QString path, QString name);
 
     const sf::Texture& GetTexture(QString filename);
@@ -20,6 +21,9 @@ public:
     void SetDefaultFont(QString name);
 
     QString GetNextID();
+
+    int GetQueueItem();
+    int GetQueueSize();
 
 private:
     Resources();
@@ -31,6 +35,9 @@ private:
     QMap<QString, sf::Font> mFonts;
     QString mDefaultFont;
     int mLastId;
+
+    QMap<QString, QString> mQueue; // path <-> name
+    int mQueueItem;
 
 };
 

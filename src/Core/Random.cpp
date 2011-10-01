@@ -13,3 +13,7 @@ int Random::Get(int min, int max) {
 float Random::Get(float min, float max) {
     return std::uniform_real_distribution<float>(min, max)(Generator);
 }
+
+bool Random::GetBool() {
+    return Get(0, 1) == 1;
+}
