@@ -36,13 +36,13 @@ void Widget::OnDraw(sf::RenderTarget& target) {
         /*sf::Sprite sprite;
         sprite.SetTexture(mRenderTexture.GetTexture(), true);
         sprite.SetPosition(GetAbsolutePosition().x, GetAbsolutePosition().y);
-        target.Draw(sprite);*/
+        target.Draw(sprite);*//*
         sf::View before = target.GetView();
         sf::View after = before;
         after.Move(-GetAbsolutePosition().x, -GetAbsolutePosition().y);
-        target.SetView(after);
+        target.SetView(after);*/
         Render(target);
-        target.SetView(before);
+        /* target.SetView(before); */
     }
 }
 

@@ -3,7 +3,8 @@
 #include "Core/Resources.hpp"
 
 Text::Text(QString name, QString caption, Vector2D position, unsigned int size, int align)
-    : Entity(name, position) {
+    : Widget(name) {
+    Position = position;
     mText.SetFont(Resources::GetInstance().GetDefaultFont());
     SetCaption(caption);
     SetSize(size);
@@ -21,7 +22,8 @@ void Text::OnUpdate(float time_diff) {
     mText.SetRotation(Vector2D::rad2Deg(Rotation));
 }
 
-void Text::OnDraw(sf::RenderTarget& target) {
+void Text::Render(sf::RenderTarget& target) {
+    mText.SetPosition(GetAbsolutePosition().x, GetAbsolutePosition().y);
     target.Draw(mText);
 }
 

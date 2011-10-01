@@ -3,9 +3,9 @@
 
 #include <QString>
 
-#include "Core/Entity.hpp"
+#include "Gui/Widget.hpp"
 
-class Text: public Entity {
+class Text: public Widget {
 public:
     enum TextAlign {
         TA_CENTER = 0x0000,
@@ -18,7 +18,7 @@ public:
     Text(QString name, QString caption, Vector2D position = Vector2D(), unsigned int size = 12, int align = TA_CENTER);
 
     virtual void OnUpdate(float time_diff);
-    virtual void OnDraw(sf::RenderTarget& target);
+    virtual void Render(sf::RenderTarget& target);
 
     void SetSize(unsigned int points);
     void SetCaption(QString caption);

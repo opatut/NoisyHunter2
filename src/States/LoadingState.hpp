@@ -18,7 +18,7 @@ public:
     virtual void OnHandleEvent(sf::Event& event);
 
 private:
-    Entity mOverlay;
+    Panel mGui;
     Text* mLoadingText;
     Panel mProgressBarOuter;
     Panel mProgressBarInner;

@@ -19,20 +19,20 @@ MenuState::MenuState()
     }
 
     mHeadline2 = new Text("menu-headline", "Noisy Hunter");
-    mHeadline2->Position.x = Input::GetInstance().GetDefaultWindow().GetWidth() / 2;
-    mHeadline2->Position.y = 100;
+    mHeadline2->Position.x = 100;
+    mHeadline2->Position.y = -100;
     mHeadline2->SetSize(36);
     mHeadline2->SetAlign(Text::TA_TOP);
     mHeadline2->SetAlignToPixel(false);
-    mScene.AddChild(mHeadline2);
+    mGui.AddChild(mHeadline2);
 
     mHeadline1 = new Text("menu-headline2", "Welcome to");
-    mHeadline1->Position.x = Input::GetInstance().GetDefaultWindow().GetWidth() / 2;
-    mHeadline1->Position.y = 80;
+    mHeadline1->Position.x = 100;
+    mHeadline1->Position.y = -120;
     mHeadline1->SetSize(18);
     mHeadline1->SetAlign(Text::TA_TOP);
     mHeadline1->SetAlignToPixel(false);
-    mScene.AddChild(mHeadline1);
+    mGui.AddChild(mHeadline1);
 
     /* ======== GUI ======== */
     mGui.Position = Vector2D(Input::GetInstance().GetDefaultWindow().GetWidth() / 2 - 100, Input::GetInstance().GetDefaultWindow().GetHeight() / 2  - 75);
@@ -80,8 +80,8 @@ void MenuState::OnUpdate(float time_diff) {
         mLifetime += time_diff;
 
         if(mLifetime < 2.5 * PI) {
-            mHeadline2->Position.x = sin(mLifetime * 0.2) * 50 + Input::GetInstance().GetDefaultWindow().GetWidth() / 2 - 50;
-            mHeadline1->Position.x = -sin(mLifetime * 0.2) * 50 + Input::GetInstance().GetDefaultWindow().GetWidth() / 2 + 50;
+            mHeadline2->Position.x = sin(mLifetime * 0.2) * 50 + 50;
+            mHeadline1->Position.x = -sin(mLifetime * 0.2) * 50 + 150;
         }
 
         mScene.Update(time_diff);

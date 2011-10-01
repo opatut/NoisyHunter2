@@ -13,7 +13,8 @@ void Panel::SetBorder(float size, sf::Color color) {
 
 void Panel::Render(sf::RenderTarget& target) {
     sf::Shape s = sf::Shape::Rectangle(
-        mBorderSize, mBorderSize,
+        GetAbsolutePosition().x + mBorderSize,
+        GetAbsolutePosition().y + mBorderSize,
         Size.x - 2 * mBorderSize,
         Size.y - 2 * mBorderSize,
         mBackground, mBorderSize, mBorderColor);

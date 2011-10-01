@@ -24,14 +24,24 @@
 #include "States/LoadingState.hpp"
 #include "States/MenuState.hpp"
 
-void do_console_command(void* sender, QString cmd) {
-    std::cout << "Console > " << cmd.toStdString() << std::endl;
-    ((TextField*)sender)->SetCaption("");
-}
-
 void load() {
     Resources::GetInstance().LoadQueue();
     Resources::GetInstance().SetDefaultFont("fonts/nouveau_ibm.ttf");
+}
+
+
+QString console_text;
+Text* console_output;
+
+void WriteConsole(QString line) {
+    console_text += line + "\n";
+    console_output->SetCaption(console_text);
+}
+
+void do_console_command(void* sender, QString cmd) {
+    std::cout << "Console > " << cmd.toStdString() << std::endl;
+    ((TextField*)sender)->SetCaption("");
+    WriteConsole("> " + cmd);
 }
 
 int main() {
@@ -61,7 +71,10 @@ int main() {
     StateManager::GetInstance().AddState(new LoadingState());
 
     /* ======== Debug Overlay ======== */
-    Entity overlay("debug_overlay");
+    Panel overlay("debug_overlay", sf::Color(0,0,0,0));
+    overlay.Position = Vector2D(0,0);
+    overlay.Size = Vector2D(app.GetWidth(), app.GetHeight());
+
     Text fps("fps", "?? FPS", Vector2D(app.GetWidth() - 5, app.GetHeight() - 25), 12, Text::TA_RIGHT | Text::TA_BOTTOM);
     overlay.AddChild(&fps);
     overlay.AddChild(new Text("info", "Noisy Hunter / Build " + QString(__DATE__), Vector2D(app.GetWidth() - 5, app.GetHeight() - 5), 12, Text::TA_RIGHT | Text::TA_BOTTOM));
@@ -72,6 +85,10 @@ int main() {
     console.Size = Vector2D(app.GetWidth() - 60, app.GetHeight() * 0.6);
     console.SetBorder(2.f, sf::Color(200, 200, 200));
     console.Hide();
+
+    console_output = new Text("output", "Console", Vector2D(5, app.GetHeight() * 0.6 - 50), Text::TA_BOTTOM | Text::TA_LEFT);
+    console_output->SetSize(12);
+    console.AddChild(console_output);
 
     TextField* ci = new TextField("console-input");
     ci->Position = Vector2D(5, app.GetHeight() * 0.6 - 30);

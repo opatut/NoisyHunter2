@@ -8,20 +8,20 @@ GraphicsButton::GraphicsButton(QString name, QString caption, sf::Sprite sprite,
 
 void GraphicsButton::Render(sf::RenderTarget& target) {
     if(mShowBackground) {
-        mBackground.SetPosition(0, 0);
+        mBackground.SetPosition(GetAbsolutePosition().x, GetAbsolutePosition().y);
         mBackground.SetScale(Size.x, Size.y);
         mBackground.SetSubRect(sf::IntRect(0, (HasFocus() ? 40 : 0), 200, 40));
         target.Draw(mBackground);
     }
 
     // draw the sprite
-    mSprite.SetPosition(0, 0);
+    mSprite.SetPosition(GetAbsolutePosition().x, GetAbsolutePosition().y);
     mSprite.SetScale(Size.x / mSprite.GetSubRect().Width, Size.y / mSprite.GetSubRect().Height);
     target.Draw(mSprite);
 
     // draw the text
     mText.SetColor(sf::Color::White);
-    mText.SetPosition(round(Size.x / 2 - mText.GetRect().Width / 2), round(Size.y / 2 - mText.GetRect().Height / 2));
+    mText.SetPosition(round(GetAbsolutePosition().x + Size.x / 2 - mText.GetRect().Width / 2), round(GetAbsolutePosition().y + Size.y / 2 - mText.GetRect().Height / 2));
     target.Draw(mText);
 }
 

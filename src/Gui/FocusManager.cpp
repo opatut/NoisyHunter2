@@ -28,6 +28,7 @@ Widget* FocusManager::GetFocusWidget() {
 }
 
 void FocusManager::ShiftFocus(int offset) {
+    std::cout << "New focus: " << mFocus << " -> " << mFocus + offset << std::endl;
     _SetFocus(mFocus + offset);
 }
 

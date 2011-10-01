@@ -18,12 +18,12 @@ void TextField::Render(sf::RenderTarget& target) {
     sf::Color c = HasFocus() ? sf::Color::White : sf::Color(255, 255, 255, 150);
 
     // draw the shape
-    mBackground = sf::Shape::Rectangle(1, 1, Size.x - 2, Size.y - 2, sf::Color(255, 255, 255, 100), 1.f, c);
+    mBackground = sf::Shape::Rectangle(GetAbsolutePosition().x + 1, GetAbsolutePosition().y + 1, Size.x - 2, Size.y - 2, sf::Color(255, 255, 255, 100), 1.f, c);
     target.Draw(mBackground);
 
     // draw the text
     mText.SetColor(c);
-    mText.SetPosition(10, round(Size.y / 2 - mText.GetRect().Height / 2));
+    mText.SetPosition(GetAbsolutePosition().x + 10, round(GetAbsolutePosition().y + Size.y / 2 - mText.GetRect().Height / 2));
     target.Draw(mText);
 }
 
