@@ -32,17 +32,7 @@ void Widget::OnUpdate(float time_diff) {
 void Widget::OnDraw(sf::RenderTarget& target) {
     if(IsVisible()) {
         _AdjustWidgetState();
-
-        /*sf::Sprite sprite;
-        sprite.SetTexture(mRenderTexture.GetTexture(), true);
-        sprite.SetPosition(GetAbsolutePosition().x, GetAbsolutePosition().y);
-        target.Draw(sprite);*//*
-        sf::View before = target.GetView();
-        sf::View after = before;
-        after.Move(-GetAbsolutePosition().x, -GetAbsolutePosition().y);
-        target.SetView(after);*/
         Render(target);
-        /* target.SetView(before); */
     }
 }
 
@@ -54,50 +44,28 @@ bool Widget::HandleEvent(sf::Event& event) {
     // children are usually in front of their parent, so they have to be
     // handled first
     for(auto iter = mChildren.begin(); iter != mChildren.end(); ++iter) {
-        Widget* w = (Widget*)iter->second;
-        if(!w->HandleEvent(event))
+        if(!((Widget*)(iter->second))->HandleEvent(event))
             return false;
     }
 
-    if(event.Type == sf::Event::MouseButtonPressed && _IsMouseInside()) {
-        FocusManager::GetInstance().SetFocusWidget(this);
-        EventClick->Call(this, event.MouseButton.Button);
-        return OnClick(event.MouseButton.Button);
-    }
-
-    if(event.Type == sf::Event::MouseButtonReleased && _IsMouseInside()) {
-        EventMouseButtonReleased->Call(this, event.MouseButton.Button);
-        return OnMouseButtonReleased(event.MouseButton.Button);
-    }
-
-    if(event.Type == sf::Event::MouseMoved) {
-        int was_hover = IsHover();
-        _AdjustWidgetState();
-
-        // we are now hovered but weren't before
-        if(_IsMouseInside() && !was_hover) {
-            EventMouseOver->Call(this);
-            return OnMouseOver();
+    if(event.Type == sf::Event::MouseButtonPressed) {
+        if(_IsMouseInside()) {
+            FocusManager::GetInstance().SetFocusWidget(this);
+            EventClick->Call(this, event.MouseButton.Button);
+            return OnClick(event.MouseButton.Button);
         }
-
-        // we are not hovered but were before
-        if(!_IsMouseInside() && was_hover) {
-            EventMouseOut->Call(this);
-            return OnMouseOut();
+    } else if(event.Type == sf::Event::MouseButtonReleased) {
+        if(_IsMouseInside()) {
+            EventMouseButtonReleased->Call(this, event.MouseButton.Button);
+            return OnMouseButtonReleased(event.MouseButton.Button);
         }
-    }
-
-    if(event.Type == sf::Event::KeyPressed) {
+    } else if(event.Type == sf::Event::KeyPressed) {
         EventKeyDown->Call(this, event.Key.Code);
         return OnKeyDown(event.Key.Code);
-    }
-
-    if(event.Type == sf::Event::KeyReleased) {
+    } else if(event.Type == sf::Event::KeyReleased) {
         EventKeyUp->Call(this, event.Key.Code);
         return OnKeyUp(event.Key.Code);
-    }
-
-    if(event.Type == sf::Event::TextEntered) {
+    } else if(event.Type == sf::Event::TextEntered) {
         EventTextEntered->Call(this, event.Text.Unicode);
         return OnTextEntered(event.Text.Unicode);
     }
@@ -199,12 +167,19 @@ void Widget::_AdjustWidgetState() {
     if(mState != before) {
         if(hover_before != IsHover()) {
             // TODO: Toggle hover event
+            if(hover_before) {
+                EventMouseOut->Call(this);
+                OnMouseOut();
+            } else {
+                EventMouseOver->Call(this);
+                OnMouseOver();
+            }
         }
         if(focus_before != HasFocus()) {
             EventChangeFocus->Call(this, HasFocus());
             OnChangeFocus(HasFocus());
         }
-        _Refresh();
+        // _Refresh();
     }
 }
 

@@ -2,11 +2,16 @@
 #define _LEVEL
 
 #include "Core/Entity.hpp"
+#include "Core/Serializable.hpp"
 #include <map>
 
-class Level : public Entity {
+class Level : public Entity, public Serializable {
 public:
     Level(QString name);
+
+    virtual void Serialize(sf::Packet& packet);
+    virtual void Deserialize(sf::Packet& packet);
+    virtual SerializableType GetType() const;
 
     virtual void OnDraw(sf::RenderTarget& target);
 
@@ -17,6 +22,9 @@ public:
 
     void SetTile(int x, int y, int id);
     int GetTile(int x, int y);
+
+    Vector2D GetTileCoordinate(Vector2D window_coordinate);
+
 
 private:
     void _RenderTiles(sf::RenderTarget& target);

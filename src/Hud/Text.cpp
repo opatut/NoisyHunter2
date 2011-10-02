@@ -23,7 +23,6 @@ void Text::OnUpdate(float time_diff) {
 }
 
 void Text::Render(sf::RenderTarget& target) {
-    mText.SetPosition(GetAbsolutePosition().x, GetAbsolutePosition().y);
     target.Draw(mText);
 }
 

@@ -17,6 +17,7 @@ public:
 private:
     Entity mScene;
     Submarine* mSubmarine;
+
 };
 
 #endif

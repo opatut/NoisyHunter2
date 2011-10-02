@@ -20,6 +20,30 @@ Level::Level(QString name)
     SetGridSize(10, 10);
 }
 
+void Level::Serialize(sf::Packet& packet) {
+    packet << mGridColumns << mGridRows << mTileSize << mTextureTileSize << mTextureGridSize;
+    for(int x = 0; x < mGridColumns; ++x) {
+        for(int y = 0; y < mGridColumns; ++y) {
+            packet << GetTile(x, y);
+        }
+    }
+}
+
+void Level::Deserialize(sf::Packet& packet) {
+    packet >> mGridColumns >> mGridRows >> mTileSize >> mTextureTileSize >> mTextureGridSize;
+    for(int x = 0; x < mGridColumns; ++x) {
+        for(int y = 0; y < mGridColumns; ++y) {
+            int id;
+            packet >> id;
+            SetTile(x, y, id);
+        }
+    }
+}
+
+Serializable::SerializableType Level::GetType() const {
+    return ST_LEVEL;
+}
+
 void Level::OnDraw(sf::RenderTarget& target) {
     _RenderTiles(target);
     target.Draw(mInfo);
@@ -50,6 +74,13 @@ void Level::SetTile(int x, int y, int id) {
 
 int Level::GetTile(int x, int y) {
     return mTiles[x][y];
+}
+
+Vector2D Level::GetTileCoordinate(Vector2D window_coordinate) {
+    window_coordinate -= GetAbsolutePosition();
+    int x = floor(window_coordinate.x / mTileSize);
+    int y = floor(window_coordinate.y / mTileSize);
+    return Vector2D(x,y);
 }
 
 void Level::_RenderTiles(sf::RenderTarget& target) {

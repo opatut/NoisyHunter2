@@ -4,6 +4,7 @@
 #include "Core/State.hpp"
 #include "Core/Entity.hpp"
 #include "Gui/Panel.hpp"
+#include "Entities/Level.hpp"
 
 class EditorState : public State {
 public:
@@ -19,6 +20,9 @@ public:
 private:
     Entity mScene;
     Panel mGuiPanel;
+    Level mLevel;
+
+    int mCurrentTile;
 
 };
 

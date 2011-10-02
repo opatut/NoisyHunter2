@@ -7,6 +7,7 @@
 #include "Core/Input.hpp"
 #include "Core/Random.hpp"
 #include "Core/Resources.hpp"
+#include "Core/Settings.hpp"
 #include "Core/StateManager.hpp"
 #include "Entities/Level.hpp"
 #include "Entities/Narwhal.hpp"
@@ -27,8 +28,8 @@
 void load() {
     Resources::GetInstance().LoadQueue();
     Resources::GetInstance().SetDefaultFont("fonts/nouveau_ibm.ttf");
-}
 
+}
 
 QString console_text;
 Text* console_output;
@@ -47,10 +48,23 @@ void do_console_command(void* sender, QString cmd) {
 int main() {
     Random::Initialize();
 
+    Settings& s = Settings::GetInstance();
+    s.Load(QFileInfo("settings.conf"));
+
+    sf::VideoMode mode;
+    if(s.GetBool("video.resolution.use_desktop", true)) {
+        mode = sf::VideoMode::GetDesktopMode();
+    } else {
+        mode.Width = s.GetInt("video.resolution.width");
+        mode.Height = s.GetInt("video.resolution.height");
+        mode.BitsPerPixel = s.GetInt("video.resolution.depth");
+    }
+    bool fullscreen = s.GetBool("video.fullscreen", true);
+
     /* ======== Setup ======== */
-    sf::RenderWindow app(sf::VideoMode::GetDesktopMode(), "NoisyHunter", sf::Style::Fullscreen);
-    // sf::RenderWindow app(sf::VideoMode(800, 600, 32), "NoisyHunter");
-    // app.SetPosition(sf::VideoMode::GetDesktopMode().Width / 2 - app.GetWidth() / 2, sf::VideoMode::GetDesktopMode().Height / 2 - app.GetHeight() / 2);
+    sf::RenderWindow app(mode, "NoisyHunter", fullscreen ? sf::Style::Fullscreen : sf::Style::Default);
+    if(!fullscreen)
+        app.SetPosition(sf::VideoMode::GetDesktopMode().Width / 2 - app.GetWidth() / 2, sf::VideoMode::GetDesktopMode().Height / 2 - app.GetHeight() / 2);
     Input::GetInstance().SetDefaultWindow(app);
     app.SetFramerateLimit(60);
 
@@ -62,7 +76,7 @@ int main() {
     logo.SetPosition(app.GetWidth() / 2, app.GetHeight() / 2);
 
     Resources::GetInstance().ReadPath(QDir("../data"));
-    std::cout << "Queued a total of " << Resources::GetInstance().GetQueueSize() << " files." << std::endl;
+    // std::cout << "Queued a total of " << Resources::GetInstance().GetQueueSize() << " files." << std::endl;
 
     sf::Thread thread(&load);
     thread.Launch();
@@ -115,7 +129,8 @@ int main() {
         if(time_diff != 0)
             avg_fps -= (avg_fps - 1.f / time_diff) * 0.01;
 
-        fps.SetCaption(QString::number(round(avg_fps)) + " FPS");
+        // fps.SetCaption(QString::number(round(avg_fps)) + " FPS");
+        fps.SetCaption(QString::number(round(1.f / time_diff)) + " FPS");
 
         sf::Event e;
         while(app.PollEvent(e)) {
@@ -149,9 +164,8 @@ int main() {
             }
 
 
-            console.HandleEvent(e);
-
-            StateManager::GetInstance().HandleEvent(e);
+            if(console.HandleEvent(e))
+                StateManager::GetInstance().HandleEvent(e);
         }
 
         // UPDATE
