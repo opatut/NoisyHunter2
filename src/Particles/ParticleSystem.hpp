@@ -9,9 +9,12 @@
 class ParticleAffector;
 class Particle;
 
-class ParticleSystem: public Entity {
+class ParticleSystem : public Entity {
 public:
     ParticleSystem(QString name, Vector2D position = Vector2D(), float rate = 1.f, Range<float> particle_lifetime = 1.f);
+
+    virtual uint32_t GetTypeId() const;
+    virtual Serializable* CreateInstance() const;
 
     virtual void OnUpdate(float time_diff);
 

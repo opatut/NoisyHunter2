@@ -2,16 +2,13 @@
 #define _SERIALIZABLE
 
 #include <SFML/Network/Packet.hpp>
+#include "IOPacket.hpp"
 
 class Serializable {
 public:
-    enum SerializableType {
-        ST_LEVEL = 0x01
-    };
-
-    virtual void Serialize(sf::Packet& packet) = 0;
-    virtual void Deserialize(sf::Packet& packet) = 0;
-    virtual SerializableType GetType() const = 0;
+    virtual void Serialize(IOPacket& packet) = 0;
+    virtual uint32_t GetTypeId() const = 0;
+    virtual Serializable* CreateInstance() const = 0;
 };
 
 #endif

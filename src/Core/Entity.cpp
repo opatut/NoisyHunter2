@@ -1,6 +1,8 @@
 #include "Entity.hpp"
 #include <iostream>
 
+#include "Serializer.hpp"
+
 Entity::Entity(QString name, Vector2D position, Vector2D size, Vector2D speed, float rotation) {
     mName = name;
     Position = position;
@@ -14,8 +16,48 @@ Entity::~Entity() {
     RemoveAllChildren();
 }
 
-QString Entity::GetName() {
+QString Entity::GetName() const {
     return mName;
+}
+
+void Entity::Serialize(IOPacket& packet) {
+    packet & mName;
+    packet & Position;
+    packet & Speed;
+    packet & Size;
+    packet & Rotation;
+
+    // serialize all children
+    if(packet.GetMode() == IOPacket::DESERIALIZE) {
+        // Read children
+        uint32_t children_count;
+        packet & children_count;
+
+        for(unsigned int i = 0; i < children_count; ++i) {
+            Serializable* s = Serializer::Load(packet.GetPacket());
+            AddChild((Entity*)s);
+        }
+    } else {
+        // count the children that are being serialized
+        uint32_t children_count = 0;
+        for(auto iter = mChildren.begin(); iter != mChildren.end(); ++iter) {
+            if(iter->second->GetTypeId() != ET_UNKNOWN)
+                ++children_count;
+        }
+        packet & children_count;
+        // Write children
+        for(auto iter = mChildren.begin(); iter != mChildren.end(); ++iter) {
+            Serializer::Write(packet.GetPacket(), iter->second);
+        }
+    }
+}
+
+uint32_t Entity::GetTypeId() const {
+    return ET_ENTITY;
+}
+
+Serializable* Entity::CreateInstance() const {
+    return nullptr;
 }
 
 Vector2D Entity::GetAbsolutePosition() {

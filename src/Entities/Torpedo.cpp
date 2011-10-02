@@ -14,6 +14,14 @@ Torpedo::Torpedo(QString name, Vector2D position, Vector2D speed, float rotation
     Scale(0.3);
 }
 
+uint32_t Torpedo::GetTypeId() const {
+    return ET_TORPEDO;
+}
+
+Serializable* Torpedo::CreateInstance() const {
+    return new Torpedo(GetName(), Position, Speed, Rotation);
+}
+
 void Torpedo::OnUpdate(float time_diff) {
     /*if(mLifetime > 0.5) {
         Speed.y = 0;

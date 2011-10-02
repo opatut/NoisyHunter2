@@ -4,7 +4,8 @@
 #define PI 3.14159265358979323846
 #include <cmath>
 
-#include <SFML/Graphics.hpp>
+#include <SFML/Network/Packet.hpp>
+#include <SFML/System/Vector2.hpp>
 
 class Vector2D {
 public:
@@ -43,6 +44,9 @@ public:
 public:
     float x, y;
 };
+
+sf::Packet& operator << (sf::Packet& p, Vector2D& v);
+sf::Packet& operator >> (sf::Packet& p, Vector2D& v);
 
 #endif
 

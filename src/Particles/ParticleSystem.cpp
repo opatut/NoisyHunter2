@@ -10,6 +10,14 @@ ParticleSystem::ParticleSystem(QString name, Vector2D position, float rate, Rang
     SetParticleLifetime(particle_lifetime);
 }
 
+uint32_t ParticleSystem::GetTypeId() const {
+    return ET_UNKNOWN;
+}
+
+Serializable* ParticleSystem::CreateInstance() const {
+    return nullptr;
+}
+
 void ParticleSystem::OnUpdate(float time_diff) {
     if(mRate > 0) {
         mTimeSinceLastParticle += time_diff;

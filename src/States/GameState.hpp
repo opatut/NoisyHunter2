@@ -15,7 +15,7 @@ public:
     virtual void OnHandleEvent(sf::Event& event);
 
 private:
-    Entity mScene;
+    Entity* mScene;
     Submarine* mSubmarine;
 
 };

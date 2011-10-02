@@ -205,3 +205,14 @@ bool Vector2D::operator!= ( const Vector2D& v2 ) const
 {
 	return !((x == v2.x) && (y == v2.y));
 }
+
+
+sf::Packet& operator << (sf::Packet& p, Vector2D& v) {
+    p << v.x << v.y;
+    return p;
+}
+
+sf::Packet& operator >> (sf::Packet& p, Vector2D& v) {
+    p >> v.x >> v.y;
+    return p;
+}

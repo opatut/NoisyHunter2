@@ -27,6 +27,14 @@ Submarine::Submarine(QString name)
     AddChild(mBubbles);
 }
 
+uint32_t Submarine::GetTypeId() const {
+    return ET_SUBMARINE;
+}
+
+Serializable* Submarine::CreateInstance() const {
+    return new Submarine("");
+}
+
 void Submarine::OnUpdate(float time_diff) {
     mBubbles->SetRate(abs(Speed.x) * 0.1);
 

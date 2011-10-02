@@ -5,13 +5,13 @@
 #include "Core/Serializable.hpp"
 #include <map>
 
-class Level : public Entity, public Serializable {
+class Level : public Entity {
 public:
     Level(QString name);
 
-    virtual void Serialize(sf::Packet& packet);
-    virtual void Deserialize(sf::Packet& packet);
-    virtual SerializableType GetType() const;
+    virtual void Serialize(IOPacket& packet);
+    virtual uint32_t GetTypeId() const;
+    virtual Serializable* CreateInstance() const;
 
     virtual void OnDraw(sf::RenderTarget& target);
 
@@ -33,8 +33,8 @@ private:
     sf::Sprite mSprite;
     sf::Text mInfo;
 
-    int mGridColumns;
-    int mGridRows;
+    uint16_t mGridColumns;
+    uint16_t mGridRows;
     float mTileSize;
 
     float mTextureTileSize;

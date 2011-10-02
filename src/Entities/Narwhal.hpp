@@ -7,6 +7,9 @@ class Narwhal : public Entity {
 public:
     Narwhal(QString name);
 
+    virtual uint32_t GetTypeId() const;
+    virtual Serializable* CreateInstance() const;
+
     virtual void OnUpdate(float time_diff);
     virtual void OnDraw(sf::RenderTarget& target);
 

@@ -12,6 +12,19 @@ Rock::Rock(QString name, QString type)
     Scale(0.3);
 }
 
+void Rock::Serialize(IOPacket& packet) {
+    Entity::Serialize(packet);
+    packet & mType;
+}
+
+uint32_t Rock::GetTypeId() const {
+    return ET_ROCK;
+}
+
+Serializable* Rock::CreateInstance() const {
+    return new Rock(GetName());
+}
+
 void Rock::OnUpdate(float time_diff) {
     mSprite.SetPosition(GetAbsolutePosition().x, GetAbsolutePosition().y);
     mSprite.SetRotation(Vector2D::rad2Deg(GetAbsoluteRotation()));

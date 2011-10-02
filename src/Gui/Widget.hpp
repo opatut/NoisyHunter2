@@ -18,6 +18,9 @@ public:
     Widget(QString name);
     ~Widget();
 
+    virtual uint32_t GetTypeId() const;
+    virtual Serializable* CreateInstance() const;
+
     virtual void Render(sf::RenderTarget& target) = 0;
 
     void OnUpdate(float time_diff);

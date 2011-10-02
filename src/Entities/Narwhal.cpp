@@ -17,6 +17,14 @@ Narwhal::Narwhal(QString name)
     mLifetime += Random::Get(0.f, 2 * PI);
 }
 
+uint32_t Narwhal::GetTypeId() const {
+    return ET_NARWHAL;
+}
+
+Serializable* Narwhal::CreateInstance() const {
+    return new Narwhal(GetName());
+}
+
 void Narwhal::OnUpdate(float time_diff) {
 
     if(Speed.x > 0 && Position.x > Input::GetInstance().GetDefaultWindow().GetWidth() + 100) {

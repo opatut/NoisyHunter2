@@ -6,6 +6,14 @@ BackgroundGradient::BackgroundGradient(QString name)
     // SetColors(sf::Color(30, 90, 170), sf::Color(0, 10, 20));
 }
 
+uint32_t BackgroundGradient::GetTypeId() const {
+    return ET_UNKNOWN;
+}
+
+Serializable* BackgroundGradient::CreateInstance() const {
+    return nullptr;
+}
+
 void BackgroundGradient::SetColors(sf::Color top, sf::Color bottom) {
     mShape = sf::Shape();
     mShape.AddPoint(0, 0, top);

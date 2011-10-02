@@ -20,28 +20,31 @@ Level::Level(QString name)
     SetGridSize(10, 10);
 }
 
-void Level::Serialize(sf::Packet& packet) {
-    packet << mGridColumns << mGridRows << mTileSize << mTextureTileSize << mTextureGridSize;
-    for(int x = 0; x < mGridColumns; ++x) {
-        for(int y = 0; y < mGridColumns; ++y) {
-            packet << GetTile(x, y);
-        }
-    }
-}
+void Level::Serialize(IOPacket& packet) {
+    Entity::Serialize(packet); // name, pos, rot, ..., children
 
-void Level::Deserialize(sf::Packet& packet) {
-    packet >> mGridColumns >> mGridRows >> mTileSize >> mTextureTileSize >> mTextureGridSize;
+    packet & mGridColumns;
+    packet & mGridRows;
+    packet & mTileSize;
+    packet & mTextureTileSize;
+    packet & mTextureGridSize;
+
+    SetGridSize(mGridRows, mGridColumns);
     for(int x = 0; x < mGridColumns; ++x) {
         for(int y = 0; y < mGridColumns; ++y) {
-            int id;
-            packet >> id;
+            int id = GetTile(x, y);
+            packet & id;
             SetTile(x, y, id);
         }
     }
 }
 
-Serializable::SerializableType Level::GetType() const {
-    return ST_LEVEL;
+uint32_t Level::GetTypeId() const {
+    return ET_LEVEL;
+}
+
+Serializable* Level::CreateInstance() const {
+    return new Level(GetName());
 }
 
 void Level::OnDraw(sf::RenderTarget& target) {

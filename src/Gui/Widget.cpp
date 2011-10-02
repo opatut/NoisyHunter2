@@ -26,6 +26,14 @@ Widget::~Widget() {
     FocusManager::GetInstance().UnregisterWidget(this);
 }
 
+uint32_t Widget::GetTypeId() const {
+    return ET_UNKNOWN;
+}
+
+Serializable* Widget::CreateInstance() const {
+    return nullptr;
+}
+
 void Widget::OnUpdate(float time_diff) {
 }
 

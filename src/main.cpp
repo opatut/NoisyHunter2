@@ -8,11 +8,13 @@
 #include "Core/Random.hpp"
 #include "Core/Resources.hpp"
 #include "Core/Settings.hpp"
+#include "Core/Serializer.hpp"
 #include "Core/StateManager.hpp"
 #include "Entities/Level.hpp"
 #include "Entities/Narwhal.hpp"
 #include "Entities/Submarine.hpp"
 #include "Entities/Torpedo.hpp"
+#include "Entities/Rock.hpp"
 #include "Gui/Button.hpp"
 #include "Gui/FocusManager.hpp"
 #include "Gui/Panel.hpp"
@@ -29,6 +31,11 @@ void load() {
     Resources::GetInstance().LoadQueue();
     Resources::GetInstance().SetDefaultFont("fonts/nouveau_ibm.ttf");
 
+    Serializer::AddPrototype(new Submarine("submarine"));
+    Serializer::AddPrototype(new Rock("rock"));
+    Serializer::AddPrototype(new Level("level"));
+    Serializer::AddPrototype(new Narwhal("narwhal"));
+    Serializer::AddPrototype(new Torpedo("torpedo", 0.f, 0.f, 0.f));
 }
 
 QString console_text;

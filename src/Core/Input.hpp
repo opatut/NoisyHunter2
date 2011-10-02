@@ -2,6 +2,7 @@
 #define _INPUT
 
 #include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
 #include <Core/Vector2D.hpp>
 
 class Input {

@@ -9,6 +9,14 @@ Particle::Particle(QString name, ParticleSystem* particle_system, float particle
     Speed.Rotate(angle);
 }
 
+uint32_t Particle::GetTypeId() const {
+    return ET_UNKNOWN;
+}
+
+Serializable* Particle::CreateInstance() const {
+    return nullptr;
+}
+
 void Particle::OnUpdate(float time_diff) {
     mParticleSystem->UpdateParticle(time_diff, this);
 
