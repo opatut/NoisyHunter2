@@ -10,8 +10,6 @@ Serializable* Serializer::Load(sf::Packet& data) {
     uint32_t id;
     data >> id;
 
-    std::cout << "Loading ... " << id << std::endl;
-
     Serializable* s = _CreateSerializableForId(id);
     if(s != nullptr) {
         IOPacket p(&data, IOPacket::DESERIALIZE);
@@ -60,11 +58,10 @@ Serializable* Serializer::_CreateSerializableForId(uint32_t id) {
 
 sf::Packet Serializer::ReadFileContents(QString filename) {
     sf::Packet p;
-
     QFile file(filename);
     file.open(QFile::ReadOnly);
-    p << file.readAll().data();
-    std::cout << "length: " << p.GetDataSize() << std::endl;
+    QByteArray data = file.readAll();
+    p.Append(data.data(), data.length());
     file.close();
     return p;
 }

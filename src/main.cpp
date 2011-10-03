@@ -31,6 +31,7 @@ void load() {
     Resources::GetInstance().LoadQueue();
     Resources::GetInstance().SetDefaultFont("fonts/nouveau_ibm.ttf");
 
+    Serializer::AddPrototype(new Entity("entity"));
     Serializer::AddPrototype(new Submarine("submarine"));
     Serializer::AddPrototype(new Rock("rock"));
     Serializer::AddPrototype(new Level("level"));
@@ -190,5 +191,5 @@ int main() {
         app.Display();
 
     }
-
+    return 0;
 }

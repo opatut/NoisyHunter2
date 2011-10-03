@@ -58,7 +58,8 @@ bool Widget::HandleEvent(sf::Event& event) {
 
     if(event.Type == sf::Event::MouseButtonPressed) {
         if(_IsMouseInside()) {
-            FocusManager::GetInstance().SetFocusWidget(this);
+            if(CanHaveFocus())
+                FocusManager::GetInstance().SetFocusWidget(this);
             EventClick->Call(this, event.MouseButton.Button);
             return OnClick(event.MouseButton.Button);
         }

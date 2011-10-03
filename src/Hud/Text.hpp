@@ -5,7 +5,7 @@
 
 #include "Gui/Widget.hpp"
 
-class Text: public Widget {
+class Text : public Widget {
 public:
     enum TextAlign {
         TA_CENTER = 0x0000,
